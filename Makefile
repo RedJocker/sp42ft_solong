@@ -6,7 +6,7 @@
 #    By: maurodri <maurodri@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/05 06:51:38 by maurodri          #+#    #+#              #
-#    Updated: 2024/02/07 15:02:34 by maurodri         ###   ########.fr        #
+#    Updated: 2024/02/07 18:20:02 by maurodri         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -20,7 +20,7 @@ LIBFT_DIR := ./lib/libftx
 LIBFT := $(LIBFT_DIR)/libft.a
 SRCS := main.c
 OBJ_DIR := ./obj/
-OBJS := $(addprefix $(OBJS_DIR), $(patsubst %.c, %.o, $(SRCS)))
+OBJS := $(addprefix $(OBJ_DIR), $(patsubst %.c, %.o, $(SRCS)))
 DEP_FLAGS := -MP -MD
 DEP_FILES := $(addsuffix .d, $(OBJS))
 INCLUDES := -I./ -I$(LIBMLX_DIR)/include
@@ -34,8 +34,8 @@ $(NAME): $(OBJS) $(LIBMLX) $(LIBFT)
 	$(CC) $(CFLAGS) $^ $(INCLUDES) $(LFLAGS) -o $@
 	etags $$(find . -name '*.[ch]') --include '~/glibc/TAGS'
 
-$(OBJS): $(OBJS_DIR)%.o : %.c | $(OBJ_DIR)
-	$(CC) $(CFLAGS)  -o $@ -c $< $(INCLUDES) 
+$(OBJS): $(OBJ_DIR)%.o : %.c | $(OBJ_DIR)
+	$(CC) $(CFLAGS)  -o $(OBJ_DIR)$@ -c $< $(INCLUDES) 
 
 $(OBJ_DIR):
 	@mkdir -p $@

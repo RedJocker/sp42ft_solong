@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42sp...>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 15:28:12 by maurodri          #+#    #+#             */
-/*   Updated: 2024/02/05 09:04:57 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/02/07 18:48:19 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void loop(t_game *game)
 int32_t	init(t_game *game)
 {
 	t_drawable hero_drawable;
-	
+
 	game->mlx = mlx_init(WIDTH, HEIGHT, "So Long", true);
 	if (!game->mlx)
 		return (system_panic(game));
