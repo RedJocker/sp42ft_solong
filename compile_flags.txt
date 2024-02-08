@@ -1,7 +1,9 @@
 -I
 ./
 -I
-./MLX42/include
+./lib/MLX42/include
+-I
+./lib/libftx/includes
 -ldl
 -lglfw
 -pthread

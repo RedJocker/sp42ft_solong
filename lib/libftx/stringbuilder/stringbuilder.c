@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line_utils.c                              :+:      :+:    :+:   */
+/*   stringbuilder.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maurodri <maurodri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maurodri <maurodri@student.42sp...>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/19 21:19:11 by maurodri          #+#    #+#             */
-/*   Updated: 2024/02/06 19:36:33 by maurodri         ###   ########.fr       */
+/*   Created: 2024/02/06 20:32:22 by maurodri          #+#    #+#             */
+/*   Updated: 2024/02/06 20:51:57 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
-
+#include "stringbuilder.h"
+#include "stringbuilder_internals.h"
 
 t_stringbuilder	stringbuilder_new(void)
 {

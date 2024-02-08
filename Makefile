@@ -6,7 +6,7 @@
 #    By: maurodri <maurodri@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/05 06:51:38 by maurodri          #+#    #+#              #
-#    Updated: 2024/02/07 18:20:02 by maurodri         ###   ########.fr        #
+#    Updated: 2024/02/07 19:23:04 by maurodri         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -23,7 +23,7 @@ OBJ_DIR := ./obj/
 OBJS := $(addprefix $(OBJ_DIR), $(patsubst %.c, %.o, $(SRCS)))
 DEP_FLAGS := -MP -MD
 DEP_FILES := $(addsuffix .d, $(OBJS))
-INCLUDES := -I./ -I$(LIBMLX_DIR)/include
+INCLUDES := -I./ -I$(LIBMLX_DIR)/include -I$(LIBFT_DIR)/includes
 CFLAGS := -g -fsanitize=address -fsanitize=undefined -Wall -Wextra #-Werror 
 LFLAGS := -ldl -lglfw -pthread -lm
 CC := cc
@@ -35,7 +35,7 @@ $(NAME): $(OBJS) $(LIBMLX) $(LIBFT)
 	etags $$(find . -name '*.[ch]') --include '~/glibc/TAGS'
 
 $(OBJS): $(OBJ_DIR)%.o : %.c | $(OBJ_DIR)
-	$(CC) $(CFLAGS)  -o $(OBJ_DIR)$@ -c $< $(INCLUDES) 
+	$(CC) $(CFLAGS)  -o $@ -c $< $(INCLUDES) 
 
 $(OBJ_DIR):
 	@mkdir -p $@
