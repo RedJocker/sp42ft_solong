@@ -6,7 +6,7 @@
 #    By: maurodri <maurodri@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/05 06:51:38 by maurodri          #+#    #+#              #
-#    Updated: 2024/02/07 19:23:04 by maurodri         ###   ########.fr        #
+#    Updated: 2024/02/08 01:56:22 by maurodri         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -24,7 +24,7 @@ OBJS := $(addprefix $(OBJ_DIR), $(patsubst %.c, %.o, $(SRCS)))
 DEP_FLAGS := -MP -MD
 DEP_FILES := $(addsuffix .d, $(OBJS))
 INCLUDES := -I./ -I$(LIBMLX_DIR)/include -I$(LIBFT_DIR)/includes
-CFLAGS := -g -fsanitize=address -fsanitize=undefined -Wall -Wextra #-Werror 
+CFLAGS := -g3 -fsanitize=address -fsanitize=undefined -Wall -Wextra #-Werror 
 LFLAGS := -ldl -lglfw -pthread -lm
 CC := cc
 
@@ -51,7 +51,7 @@ $(LIBFT):
 clean:
 	rm -fr $(OBJS_DIR) **/*~ *~ **/.#*
 	$(MAKE) -C $(LIBMLX_DIR)/build clean
-	$(MAKE) -C $(LIBFT_DIR) clean
+	$(MAKE) -C $(LIBFT_DIR) fclean
 
 fclean: clean
 	rm -f $(NAME)

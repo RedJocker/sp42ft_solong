@@ -6,7 +6,7 @@
 #    By: maurodri <maurodri@student.42sp...>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/05 22:04:40 by maurodri          #+#    #+#              #
-#    Updated: 2024/02/07 20:11:39 by maurodri         ###   ########.fr        #
+#    Updated: 2024/02/07 23:55:01 by maurodri         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -102,7 +102,7 @@ OBJS_DIR := ./obj/
 OBJS = $(addprefix $(OBJS_DIR), $(patsubst %.c,%.o,$(FILES)))
 DEP_FLAGS := -MP -MD
 DEP_FILES := $(addsuffix .d,$(OBJS))
-CFLAGS := -fsanitize=address -fsanitize=undefined -Wall -Wextra -Werror
+CFLAGS := -fsanitize=address -fsanitize=undefined -g3 -Wall -Wextra -Werror
 CC := cc
 
 all: $(NAME)

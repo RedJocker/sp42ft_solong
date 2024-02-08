@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42sp...>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 15:28:12 by maurodri          #+#    #+#             */
-/*   Updated: 2024/02/07 22:20:40 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/02/08 02:04:43 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,8 +61,8 @@ int32_t	init(t_game *game)
 	if (!game->ctx.drawables || !game->ctx.textures || !game->mlx
 		|| !hero_drawable || !hero_texture)
 		return (system_panic(game));
-	game->ctx.drawables = ft_arraylist_add(game->ctx.textures, hero_texture);
-	game->ctx.textures = ft_arraylist_add(game->ctx.drawables, hero_drawable);
+	game->ctx.textures = ft_arraylist_add(game->ctx.textures, hero_texture);
+	game->ctx.drawables = ft_arraylist_add(game->ctx.drawables, hero_drawable);
 	hero_drawable->img = mlx_texture_to_image(game->mlx, hero_texture);
 	if (!hero_drawable->img || !game->ctx.drawables
 		|| !game->ctx.textures)
