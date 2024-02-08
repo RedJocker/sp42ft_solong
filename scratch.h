@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 06:58:58 by maurodri          #+#    #+#             */
-/*   Updated: 2024/02/07 22:16:07 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/02/08 03:47:41 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,10 @@ typedef struct s_color
 typedef enum e_entity_type
 {
 	HERO,
-	ITEM,
-	WALL,
-	ENEMY,
-	EXIT,
+//	ITEM,
+//	WALL,
+//	ENEMY,
+//	EXIT,
 }	t_entity_type;
 
 typedef struct s_drawable

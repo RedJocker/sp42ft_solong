@@ -6,7 +6,7 @@
 #    By: maurodri <maurodri@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/05 06:51:38 by maurodri          #+#    #+#              #
-#    Updated: 2024/02/08 01:56:22 by maurodri         ###   ########.fr        #
+#    Updated: 2024/02/08 03:47:04 by maurodri         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -22,8 +22,9 @@ SRCS := main.c
 OBJ_DIR := ./obj/
 OBJS := $(addprefix $(OBJ_DIR), $(patsubst %.c, %.o, $(SRCS)))
 DEP_FLAGS := -MP -MD
-DEP_FILES := $(addsuffix .d, $(OBJS))
+DEP_FILES := $(patsubst %.o, %.d, $(OBJS))
 INCLUDES := -I./ -I$(LIBMLX_DIR)/include -I$(LIBFT_DIR)/includes
+VPATH := ./
 CFLAGS := -g3 -fsanitize=address -fsanitize=undefined -Wall -Wextra #-Werror 
 LFLAGS := -ldl -lglfw -pthread -lm
 CC := cc
@@ -33,9 +34,10 @@ all: $(NAME)
 $(NAME): $(OBJS) $(LIBMLX) $(LIBFT)
 	$(CC) $(CFLAGS) $^ $(INCLUDES) $(LFLAGS) -o $@
 	etags $$(find . -name '*.[ch]') --include '~/glibc/TAGS'
+	echo $(DEP_FILES)
 
 $(OBJS): $(OBJ_DIR)%.o : %.c | $(OBJ_DIR)
-	$(CC) $(CFLAGS)  -o $@ -c $< $(INCLUDES) 
+	$(CC) $(CFLAGS) $(DEP_FLAGS) -o $@ -c $< $(INCLUDES) 
 
 $(OBJ_DIR):
 	@mkdir -p $@
@@ -49,7 +51,7 @@ $(LIBFT):
 .PHONY: all clean fclean re bonus
 
 clean:
-	rm -fr $(OBJS_DIR) **/*~ *~ **/.#*
+	rm -fr $(OBJ_DIR) **/*~ *~ **/.#*
 	$(MAKE) -C $(LIBMLX_DIR)/build clean
 	$(MAKE) -C $(LIBFT_DIR) fclean
 
