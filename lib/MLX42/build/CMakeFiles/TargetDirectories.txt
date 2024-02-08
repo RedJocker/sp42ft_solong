@@ -1,7 +1,0 @@
-/nfs/homes/maurodri/42_exercises/sp42ft_solong/lib/MLX42/build/CMakeFiles/install/strip.dir
-/nfs/homes/maurodri/42_exercises/sp42ft_solong/lib/MLX42/build/CMakeFiles/install.dir
-/nfs/homes/maurodri/42_exercises/sp42ft_solong/lib/MLX42/build/CMakeFiles/list_install_components.dir
-/nfs/homes/maurodri/42_exercises/sp42ft_solong/lib/MLX42/build/CMakeFiles/rebuild_cache.dir
-/nfs/homes/maurodri/42_exercises/sp42ft_solong/lib/MLX42/build/CMakeFiles/edit_cache.dir
-/nfs/homes/maurodri/42_exercises/sp42ft_solong/lib/MLX42/build/CMakeFiles/install/local.dir
-/nfs/homes/maurodri/42_exercises/sp42ft_solong/lib/MLX42/build/CMakeFiles/mlx42.dir

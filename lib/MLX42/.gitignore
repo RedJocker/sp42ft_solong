@@ -62,6 +62,7 @@ lib/glfw/
 mlx_*_shader.c
 main.c
 test
+build
 
 # Automatic downloaded deps
 _deps/
