@@ -6,24 +6,22 @@
 /*   By: maurodri <maurodri@student.42sp...>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 15:28:12 by maurodri          #+#    #+#             */
-/*   Updated: 2024/02/08 02:04:43 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/02/09 05:20:34 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <MLX42/MLX42.h>
-#include <stdint.h>
-#include <stdio.h>
-#include <stdlib.h>
 
 #include "collection/ft_arraylist.h"
 #include "scratch.h"
+#include "ft_stdio.h"
 
 int32_t	system_panic(t_game *game)
 {
 	game->exit_status = ERROR;
 	if (game->mlx)
 		mlx_close_window(game->mlx);
-	puts(mlx_strerror(mlx_errno));
+	ft_printf(mlx_strerror(mlx_errno));
 	return (ERROR);
 }
 
@@ -47,29 +45,80 @@ void	loop(t_game *game)
 	(void) game;
 }
 
-int32_t	init(t_game *game)
+int32_t context_load_asset(t_context *ctx, char *path, mlx_t *mlx)
 {
 	t_drawable		*hero_drawable;
 	mlx_texture_t	*hero_texture;
+
+	hero_drawable = malloc(sizeof(t_drawable));
+	if (!hero_drawable)
+		return (0);
+	ctx->drawables = ft_arraylist_add(ctx->drawables, hero_drawable);
+	if (!ctx->drawables)
+		return (0);
+	hero_texture = mlx_load_png(path);
+	if (!hero_texture)
+		return (0);
+	ctx->textures = ft_arraylist_add(ctx->textures, hero_texture);
+	if (!ctx->textures)
+		return (0);
+	hero_drawable->img = mlx_texture_to_image(mlx, hero_texture);
+	if (!hero_drawable->img)
+		return (0);
+	return (1);
+}
+
+int32_t context_init(t_context *ctx, mlx_t *mlx)
+{
+	int32_t	i;
+	char 	*asset;
+	int32_t  is_ok;
+	
+	i = 0;
+	while (1)
+	{
+		if (i == HERO)
+			is_ok = context_load_asset(ctx, "./assets/hero.png", mlx);
+		else if (i == ITEM)
+			is_ok = context_load_asset(ctx, "./assets/item.png", mlx);
+		else
+			break;
+		if (!is_ok)
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
+
+
+int32_t game_map_init(t_map *map)
+{
+	map->chart = ft_arraylist_new()
+}
+
+int32_t	init(t_game *game)
+{
+	t_drawable	*hero_drawable;
+	t_drawable	*item_drawable;
 
 	game->ctx.drawables = ft_arraylist_new(free);
 	game->ctx.textures = ft_arraylist_new(
 			(void (*)(void *)) mlx_delete_texture);
 	game->mlx = mlx_init(WIDTH, HEIGHT, "So Long", true);
-	hero_drawable = malloc(sizeof(t_drawable));
-	hero_texture = mlx_load_png("./assets/hero.png");
-	if (!game->ctx.drawables || !game->ctx.textures || !game->mlx
-		|| !hero_drawable || !hero_texture)
+	if (!game->ctx.drawables || !game->ctx.textures || !game->mlx)
 		return (system_panic(game));
-	game->ctx.textures = ft_arraylist_add(game->ctx.textures, hero_texture);
-	game->ctx.drawables = ft_arraylist_add(game->ctx.drawables, hero_drawable);
-	hero_drawable->img = mlx_texture_to_image(game->mlx, hero_texture);
-	if (!hero_drawable->img || !game->ctx.drawables
-		|| !game->ctx.textures)
-		(system_panic(game));
+	game_map_init(&game->map);
+	context_init(&game->ctx, game->mlx);
+	hero_drawable = ft_arraylist_get(game->ctx.drawables, HERO);
 	hero_drawable->i = mlx_image_to_window(
 			game->mlx, hero_drawable->img, 10 * 32, 10 * 32);
 	if (hero_drawable->i < 0)
+		(system_panic(game));
+	item_drawable = ft_arraylist_get(game->ctx.drawables, ITEM);
+	item_drawable->i = mlx_image_to_window(
+			game->mlx, item_drawable->img, 15 * 32, 10 * 32);
+	if (item_drawable->i < 0)
 		(system_panic(game));
 	mlx_loop_hook(game->mlx, (void (*)(void *)) loop, game);
 	mlx_close_hook(game->mlx, system_exit_ok, game);

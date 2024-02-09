@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 06:58:58 by maurodri          #+#    #+#             */
-/*   Updated: 2024/02/08 03:47:41 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/02/09 05:00:32 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,8 @@ typedef struct s_color
 
 typedef enum e_entity_type
 {
-	HERO,
-//	ITEM,
+	HERO = 0,
+	ITEM,
 //	WALL,
 //	ENEMY,
 //	EXIT,
@@ -54,9 +54,15 @@ typedef struct s_context
 	t_arraylist	textures;
 }	t_context;
 
+typedef struct s_map
+{
+	t_arraylist	chart;
+}	t_map;
+
 typedef struct s_game
 {
 	mlx_t			*mlx;
+	t_map			map;
 	t_context		ctx;
 	t_exit_status	exit_status;
 }	t_game;
