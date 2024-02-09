@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 10:39:49 by maurodri          #+#    #+#             */
-/*   Updated: 2024/02/07 20:56:26 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/02/07 20:27:26 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ t_arraylist	ft_arraylist_add(t_arraylist alst, void *element)
 {
 	void	**temp;
 
-	if ((size_t) alst->capacity == (size_t) alst->size)
+	if (alst->capacity == alst->size)
 	{
 		temp = (void *) ft_realloc(
 				alst->arr,
