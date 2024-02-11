@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 21:19:28 by maurodri          #+#    #+#             */
-/*   Updated: 2024/02/06 20:53:32 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/02/11 17:49:46 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 # endif
 
 # ifndef FD_SIZE
-#  define FD_SIZE 5
+#  define FD_SIZE 100
 # endif
 
 char			*get_next_line(int fd);

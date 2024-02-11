@@ -6,13 +6,14 @@
 /*   By: maurodri <maurodri@student.42sp...>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 15:28:12 by maurodri          #+#    #+#             */
-/*   Updated: 2024/02/11 13:04:39 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/02/11 18:03:19 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <MLX42/MLX42.h>
 #include "collection/ft_arraylist.h"
 #include "ft_memlib.h"
+#include "get_next_line.h"
 #include "scratch.h"
 #include "ft_stdio.h"
 #include "ft_util.h"
@@ -45,6 +46,12 @@ int	colision_check(int32_t x, int32_t y, t_entity *e)
 void	loop(t_game *game)
 {
 	(void) game;
+	/* t_entity *e = ft_arraylist_get(ft_arraylist_get(game->map.chart, 0), 2); */
+	/* for (int i = 0; i < ft_arraylist_len(e->drawables); i++) */
+	/* { */
+	/* 	t_drawable *d = ft_arraylist_get(e->drawables, i); */
+	/* 	d->img->instances[d->i].enabled = ((int) mlx_get_time()) % 2 == i; */
+	/* } */
 }
 
 int32_t	context_load_asset(
@@ -190,20 +197,21 @@ int32_t	entities_init(t_game *game)
 
 void	*map_transform_string_line(void *s)
 {
-	char		*str;
+	char		*ch;
 	t_arraylist	lst_ch;
 	size_t		i;
-	size_t		len;
+	size_t		 len;
 
-	str = s;
-	lst_ch = ft_arraylist_new((t_vfun1) ft_nop);
+	lst_ch = ft_arraylist_new(free);
 	if (!lst_ch)
 		return (NULL);
 	i = 0;
-	len = ft_strlen(str);
+	len = ft_strlen(((char *)s));
 	while (i < len)
 	{
-		lst_ch = ft_arraylist_add(lst_ch, str + i);
+		ch = malloc(sizeof(char));
+		*ch = ((char *)s)[i];
+		lst_ch = ft_arraylist_add(lst_ch, ch);
 		if (!lst_ch)
 			return (NULL);
 		i++;
@@ -211,13 +219,25 @@ void	*map_transform_string_line(void *s)
 	return (lst_ch);
 }
 
+#include <fcntl.h>
 int32_t	game_map_init(t_map *map)
 {
-	map->chart = ft_arraylist_new((t_vfun1) ft_nop);
+	int 	fd;
+	char	*str;
+
+	map->chart = ft_arraylist_new((free));
 	if (!map->chart)
 		return (0);
-	map->chart = ft_arraylist_add(map->chart, "CCPP");
-	map->chart = ft_arraylist_add(map->chart, "CCP1");
+	fd = open("./maps/m.ber", O_RDONLY);
+	str = get_next_line(fd);
+	while (str)
+	{
+		ft_printf("e: %s\n", str);
+		map->chart = ft_arraylist_add(map->chart, str);
+		if (!map->chart)
+			return (0);
+		str = get_next_line(fd);
+	}
 	if (!map->chart)
 		return (0);
 	if (ft_arraylist_transform(map->chart, map_transform_string_line,
