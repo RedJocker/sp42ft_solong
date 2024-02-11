@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42sp...>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 15:28:12 by maurodri          #+#    #+#             */
-/*   Updated: 2024/02/11 07:52:10 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/02/11 13:04:39 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,8 @@ int32_t	context_load_asset(
 	if (!drawable)
 		return (0);
 	lst = ft_arraylist_get(ctx->drawables, type);
+	if (!lst)
+		return (0);
 	lst = ft_arraylist_add(lst, drawable);
 	if (!lst)
 		return (0);
@@ -103,7 +105,10 @@ int32_t	context_init(t_context *ctx, mlx_t *mlx)
 	while (1)
 	{
 		if (i == HERO)
+		{
 			is_ok = context_load_asset(ctx, "./assets/hero.png", mlx, HERO);
+			is_ok &= context_load_asset(ctx, "./assets/hero2.png", mlx, HERO);
+		}
 		else if (i == ITEM)
 			is_ok = context_load_asset(ctx, "./assets/item.png", mlx, ITEM);
 		else if (i == WALL)
@@ -234,7 +239,7 @@ int32_t	init(t_game *game)
 		return (system_panic(game));
 	if (!entities_init(game))
 		return (system_panic(game));
-	mlx_loop_hook(game->mlx, (void (*)(void *)) loop, game);
+	mlx_loop_hook(game->mlx, (t_vfun1) loop, game);
 	mlx_close_hook(game->mlx, system_exit_ok, game);
 	return (OK);
 }
