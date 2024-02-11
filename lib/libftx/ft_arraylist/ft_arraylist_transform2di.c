@@ -6,20 +6,20 @@
 /*   By: maurodri <maurodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 09:42:32 by maurodri          #+#    #+#             */
-/*   Updated: 2024/02/09 10:13:32 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/02/11 07:59:15 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_arraylist_internal.h"
 
-static int update_list(
+static int	update_list(
 	t_arraylist ilst,
 	size_t i,
-    void *(*fun)(size_t i, size_t j, void *element))
+	void *(*fun)(size_t i, size_t j, void *element))
 {
 	size_t	j;
 	void	*temp;
-	int      num_nulls_returned;
+	int		num_nulls_returned;
 
 	num_nulls_returned = 0;
 	j = 0;
