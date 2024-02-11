@@ -6,18 +6,19 @@
 /*   By: maurodri <maurodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 06:58:58 by maurodri          #+#    #+#             */
-/*   Updated: 2024/02/09 11:22:48 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/02/11 07:55:05 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef SCRATCH_H
 # define SCRATCH_H
-
 # include "collection/ft_arraylist.h"
 # include <MLX42/MLX42.h>
 
 # define WIDTH 800
 # define HEIGHT 600
+
+typedef void		(*t_vfun1) (void *);
 
 typedef enum e_exit_status
 {
@@ -81,10 +82,10 @@ typedef enum e_direction
 
 typedef struct s_entity
 {
-	t_entity_type type;
+	t_entity_type	type;
 	int32_t			x;
 	int32_t			y;
-	t_drawable		*drawables;
+	t_arraylist		drawables;
 	t_arraylist		components;
 }	t_entity;
 
