@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42sp...>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 15:28:12 by maurodri          #+#    #+#             */
-/*   Updated: 2024/02/11 19:40:34 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/02/15 19:09:56 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,10 +51,10 @@ void	loop(t_game *game)
 {
 	(void) game;
 	t_entity *e = game->map.hero;
-	for (int i = 0; i < ft_arraylist_len(e->drawables); i++)
+	for (size_t i = 0; i < ft_arraylist_len(e->drawables); i++)
 	{
 		t_drawable *d = ft_arraylist_get(e->drawables, i);
-		d->img->instances[d->i].enabled = ((int) mlx_get_time()) % 2 == i;
+		d->img->instances[d->i].enabled = ((size_t) mlx_get_time()) % 2 == i;
 	}
 }
 
@@ -150,20 +150,11 @@ t_entity_type	entity_type_by_ch(char ch)
 	return (type);
 }
 
-t_entity	*entity_init(size_t y, size_t x, char *ch, t_game *game)
+int		entity_drawables_init(t_entity *entity, t_game *game)
 {
-	t_entity		*entity;
-	t_drawable		*drawable;
-	size_t			i;
+	t_drawable	*drawable;
+	size_t		i;
 
-	entity = malloc(sizeof(t_entity));
-	if (!entity)
-		return (NULL);
-	entity->type = entity_type_by_ch(*ch);
-	entity->drawables = ft_arraylist_get(game->ctx.drawables, entity->type);
-	entity->x = x;
-	entity->y = y;
-	entity->components = NULL;
 	i = 0;
 	while (i < ft_arraylist_len(entity->drawables))
 	{
@@ -172,10 +163,70 @@ t_entity	*entity_init(size_t y, size_t x, char *ch, t_game *game)
 		drawable->i = mlx_image_to_window(
 				game->mlx, drawable->img, entity->x * 32, entity->y * 32);
 		if (drawable->i < 0)
-			return (NULL);
+			return (0);
 		drawable->img->instances[drawable->i].enabled = i == 0;
 		i++;
 	}
+	return (1);
+}
+
+t_direction entity_hero_move(t_entity *entity, t_game *game)
+{
+	return (DOWN);
+}
+
+void	entity_hero_components_destroy(t_component *component)
+{
+	if (component->type == MOVEABLE)
+		free(component->component);
+	free(component);
+}
+
+int	entity_hero_components_init(t_entity *entity, t_game *game)
+{
+	t_component *component;
+	t_moveable	*moveable;
+
+	entity->components = ft_arraylist_new((t_vfun1)entity_hero_components_destroy);
+	if (!entity->components)
+		return (0);
+	component = malloc(sizeof(t_component));
+	if (!component)
+		return (0);
+	component->type = MOVEABLE;
+	moveable = malloc(sizeof(t_moveable));
+	if (!moveable)
+		return (0);
+	component->component = moveable;
+	moveable->move = entity_hero_move;
+	entity->components = ft_arraylist_add(entity->components, component);
+	return (1);
+}
+
+int	entity_components_init(t_entity *entity, t_game *game)
+{
+	if (entity->type == HERO)
+		return (entity_hero_components_init(entity, game));
+	else
+		return (1);
+}
+
+t_entity	*entity_new(size_t y, size_t x, t_entity_type *type, t_game *game)
+{
+	t_entity		*entity;
+
+	entity = malloc(sizeof(t_entity));
+	if (!entity)
+		return (NULL);
+	entity->type = *type;
+	entity->drawables = ft_arraylist_get(game->ctx.drawables, entity->type);
+	entity->x = x;
+	entity->y = y;
+	entity->components = NULL;
+	if (!entity_drawables_init(entity, game))
+		return (NULL);
+	if (!entity_components_init(entity, game))
+		return (NULL);
 	if (entity->type == HERO)
 		game->map.hero = entity;
 	return (entity);
@@ -202,7 +253,7 @@ int32_t	entities_init(t_game *game)
 {
 	if (ft_arraylist_transform2diarg(
 			game->map.chart,
-			(void *(*)(size_t, size_t, void*, void*)) entity_init,
+			(void *(*)(size_t, size_t, void*, void*)) entity_new,
 		(void *) game,
 		(t_vfun1) ft_nop) > 0)
 		return (0);
@@ -215,29 +266,33 @@ int32_t	entities_init(t_game *game)
 
 void	*map_transform_string_line(void *s)
 {
-	char		*ch;
-	t_arraylist	lst_ch;
-	size_t		i;
-	size_t		 len;
+	char			ch;
+	t_arraylist		lst_type;
+	size_t			i;
+	size_t			len;
+	t_entity_type	*type;
 
-	lst_ch = ft_arraylist_new(free);
-	if (!lst_ch)
+	lst_type = ft_arraylist_new(free);
+	if (!lst_type)
 		return (NULL);
 	i = 0;
 	len = ft_strlen(((char *)s));
 	while (i < len)
 	{
-		ch = malloc(sizeof(char));
-		*ch = ((char *)s)[i];
-		lst_ch = ft_arraylist_add(lst_ch, ch);
-		if (!lst_ch)
+		ch = ((char *)s)[i];
+		type = malloc(sizeof(t_entity_type));
+		*type = entity_type_by_ch(ch);
+		if (!type)
+			return (NULL);
+		lst_type = ft_arraylist_add(lst_type, type);
+		if (!lst_type)
 			return (NULL);
 		i++;
 	}
-	return (lst_ch);
+	return (lst_type);
 }
 
-int32_t	game_map_init(t_map *map)
+int32_t	map_init(t_map *map)
 {
 	int 	fd;
 	char	*str;
@@ -264,7 +319,7 @@ int32_t	game_map_init(t_map *map)
 	return (1);
 }
 
-int32_t	init(t_game *game)
+int32_t	system_init(t_game *game)
 {
 	game->ctx.drawables = ft_arraylist_new((t_vfun1) ft_arraylist_destroy);
 	game->ctx.textures = ft_arraylist_new((t_vfun1) mlx_delete_texture);
@@ -273,7 +328,7 @@ int32_t	init(t_game *game)
 	game->mlx = mlx_init(WIDTH, HEIGHT, "So Long", true);
 	if (!game->mlx)
 		return (system_panic(game, MLX_ERROR, NULL));
-	if (!game_map_init(&game->map))
+	if (!map_init(&game->map))
 		return (system_panic(game, ERROR, "Failed to init map"));
 	if (!context_init(&game->ctx, game->mlx))
 		return (system_panic(game, ERROR, "Failed to init assets"));
@@ -288,7 +343,7 @@ int32_t	main(void)
 {
 	t_game	game;
 
-	if (init(&game) == OK)
+	if (system_init(&game) == OK)
 		mlx_loop(game.mlx);
 	ft_arraylist_destroy(game.ctx.drawables);
 	ft_arraylist_destroy(game.ctx.textures);
