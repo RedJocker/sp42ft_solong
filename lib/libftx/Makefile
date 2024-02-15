@@ -6,7 +6,7 @@
 #    By: maurodri <maurodri@student.42sp...>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/05 22:04:40 by maurodri          #+#    #+#              #
-#    Updated: 2024/02/09 11:02:53 by maurodri         ###   ########.fr        #
+#    Updated: 2024/02/11 19:29:12 by maurodri         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -88,6 +88,7 @@ FILES = ft_isalpha.c \
 		ft_arraylist_pop.c \
 		ft_arraylist_replace.c \
 		ft_arraylist_transform.c \
+		ft_arraylist_transform2d.c \
 		ft_arraylist_transform2di.c \
 		ft_arraylist_transform2diarg.c \
 		stringbuilder.c

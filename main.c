@@ -6,10 +6,11 @@
 /*   By: maurodri <maurodri@student.42sp...>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 15:28:12 by maurodri          #+#    #+#             */
-/*   Updated: 2024/02/11 18:03:19 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/02/11 19:40:34 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <fcntl.h>
 #include <MLX42/MLX42.h>
 #include "collection/ft_arraylist.h"
 #include "ft_memlib.h"
@@ -19,13 +20,16 @@
 #include "ft_util.h"
 #include "ft_string.h"
 
-int32_t	system_panic(t_game *game)
+int32_t	system_panic(t_game *game, t_exit_status exit_code, char *msg)
 {
-	game->exit_status = ERROR;
+	game->exit_status = exit_code;
 	if (game->mlx)
 		mlx_close_window(game->mlx);
-	ft_printf(mlx_strerror(mlx_errno));
-	return (ERROR);
+	if (exit_code == MLX_ERROR)
+		ft_putstr_fd((char *) mlx_strerror(mlx_errno), 2);
+	else if (msg)
+		ft_putstr_fd(msg, 2);
+	return (exit_code);
 }
 
 void	system_exit_ok(void *param)
@@ -46,12 +50,12 @@ int	colision_check(int32_t x, int32_t y, t_entity *e)
 void	loop(t_game *game)
 {
 	(void) game;
-	/* t_entity *e = ft_arraylist_get(ft_arraylist_get(game->map.chart, 0), 2); */
-	/* for (int i = 0; i < ft_arraylist_len(e->drawables); i++) */
-	/* { */
-	/* 	t_drawable *d = ft_arraylist_get(e->drawables, i); */
-	/* 	d->img->instances[d->i].enabled = ((int) mlx_get_time()) % 2 == i; */
-	/* } */
+	t_entity *e = game->map.hero;
+	for (int i = 0; i < ft_arraylist_len(e->drawables); i++)
+	{
+		t_drawable *d = ft_arraylist_get(e->drawables, i);
+		d->img->instances[d->i].enabled = ((int) mlx_get_time()) % 2 == i;
+	}
 }
 
 int32_t	context_load_asset(
@@ -172,6 +176,8 @@ t_entity	*entity_init(size_t y, size_t x, char *ch, t_game *game)
 		drawable->img->instances[drawable->i].enabled = i == 0;
 		i++;
 	}
+	if (entity->type == HERO)
+		game->map.hero = entity;
 	return (entity);
 }
 
@@ -184,14 +190,26 @@ void	entity_destroy(t_entity *entity)
 	free(entity);
 }
 
+t_entity	*map_remove_floor(t_entity *entity)
+{
+	if (entity->type == FLOOR)
+		return (ft_free_retnull(entity));
+	else
+		return entity;
+}
+
 int32_t	entities_init(t_game *game)
 {
 	if (ft_arraylist_transform2diarg(
 			game->map.chart,
 			(void *(*)(size_t, size_t, void*, void*)) entity_init,
 		(void *) game,
-		(t_vfun1) entity_destroy) > 0)
+		(t_vfun1) ft_nop) > 0)
 		return (0);
+	ft_arraylist_transform2d(
+		game->map.chart,
+		(void *(*) (void*)) map_remove_floor,
+		(t_vfun1) entity_destroy);
 	return (1);
 }
 
@@ -219,7 +237,6 @@ void	*map_transform_string_line(void *s)
 	return (lst_ch);
 }
 
-#include <fcntl.h>
 int32_t	game_map_init(t_map *map)
 {
 	int 	fd;
@@ -229,10 +246,11 @@ int32_t	game_map_init(t_map *map)
 	if (!map->chart)
 		return (0);
 	fd = open("./maps/m.ber", O_RDONLY);
+	if (fd < 0)
+		return (0);
 	str = get_next_line(fd);
 	while (str)
 	{
-		ft_printf("e: %s\n", str);
 		map->chart = ft_arraylist_add(map->chart, str);
 		if (!map->chart)
 			return (0);
@@ -250,15 +268,17 @@ int32_t	init(t_game *game)
 {
 	game->ctx.drawables = ft_arraylist_new((t_vfun1) ft_arraylist_destroy);
 	game->ctx.textures = ft_arraylist_new((t_vfun1) mlx_delete_texture);
+	if (!game->ctx.drawables || !game->ctx.textures)
+		return (system_panic(game, MEMORY_ERROR, "No memory to init drawables"));
 	game->mlx = mlx_init(WIDTH, HEIGHT, "So Long", true);
-	if (!game->ctx.drawables || !game->ctx.textures || !game->mlx)
-		return (system_panic(game));
+	if (!game->mlx)
+		return (system_panic(game, MLX_ERROR, NULL));
 	if (!game_map_init(&game->map))
-		return (system_panic(game));
+		return (system_panic(game, ERROR, "Failed to init map"));
 	if (!context_init(&game->ctx, game->mlx))
-		return (system_panic(game));
+		return (system_panic(game, ERROR, "Failed to init assets"));
 	if (!entities_init(game))
-		return (system_panic(game));
+		return (system_panic(game, ERROR, "Failed to init entities"));
 	mlx_loop_hook(game->mlx, (t_vfun1) loop, game);
 	mlx_close_hook(game->mlx, system_exit_ok, game);
 	return (OK);

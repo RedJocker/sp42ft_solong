@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/27 17:52:00 by maurodri          #+#    #+#             */
-/*   Updated: 2024/02/11 08:00:52 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/02/11 19:28:29 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,5 +38,9 @@ int			ft_arraylist_transform2diarg(
 				t_arraylist alst,
 				void *(*fun)(size_t i, size_t j, void *element, void *arg),
 				void *arg,
+				void (*update_destroy_element)(void *element));
+int			ft_arraylist_transform2d(
+				t_arraylist alst,
+				void *(*fun)(void *element),
 				void (*update_destroy_element)(void *element));
 #endif

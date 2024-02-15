@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 06:58:58 by maurodri          #+#    #+#             */
-/*   Updated: 2024/02/11 07:55:05 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/02/11 18:42:47 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,10 @@ typedef void		(*t_vfun1) (void *);
 typedef enum e_exit_status
 {
 	OK,
-	ERROR
+	ERROR,
+	MLX_ERROR,
+	MEMORY_ERROR,
+	INVALID_MAP
 }	t_exit_status;
 
 typedef enum e_entity_type
@@ -45,12 +48,23 @@ typedef struct s_drawable
 typedef struct s_context
 {
 	t_arraylist	drawables;
-	t_arraylist	textures;
+	t_arraylist textures;
 }	t_context;
+
+
+typedef struct s_entity
+{
+	t_entity_type	type;
+	int32_t			x;
+	int32_t			y;
+	t_arraylist		drawables;
+	t_arraylist		components;
+}	t_entity;
 
 typedef struct s_map
 {
-	t_arraylist	chart;
+	t_arraylist chart;
+	t_entity	*hero;
 }	t_map;
 
 typedef struct s_game
@@ -79,15 +93,6 @@ typedef enum e_direction
 	DOWN,
 	LEFT
 }	t_direction;
-
-typedef struct s_entity
-{
-	t_entity_type	type;
-	int32_t			x;
-	int32_t			y;
-	t_arraylist		drawables;
-	t_arraylist		components;
-}	t_entity;
 
 typedef t_direction	(*t_move_fun)(t_entity *entity, t_game *game);
 
