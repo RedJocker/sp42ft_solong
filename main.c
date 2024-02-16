@@ -6,12 +6,13 @@
 /*   By: maurodri <maurodri@student.42sp...>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 15:28:12 by maurodri          #+#    #+#             */
-/*   Updated: 2024/02/15 19:09:56 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/02/15 21:50:59 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <fcntl.h>
 #include <MLX42/MLX42.h>
+#include <stdint.h>
 #include "collection/ft_arraylist.h"
 #include "ft_memlib.h"
 #include "get_next_line.h"
@@ -49,12 +50,35 @@ int	colision_check(int32_t x, int32_t y, t_entity *e)
 
 void	loop(t_game *game)
 {
-	(void) game;
 	t_entity *e = game->map.hero;
+	t_entity *o;
+	t_moveable *moveable;
+	t_component *component;
+	t_direction direction;
+	int32_t		new_x;
+	int32_t		new_y;
+	
 	for (size_t i = 0; i < ft_arraylist_len(e->drawables); i++)
 	{
 		t_drawable *d = ft_arraylist_get(e->drawables, i);
 		d->img->instances[d->i].enabled = ((size_t) mlx_get_time()) % 2 == i;
+	}
+	component = ft_arraylist_get(game->map.hero->components, 0);
+	moveable = component->component;
+	direction = moveable->move(e, game);
+	if (direction == IDLE)
+		return;
+	new_x = e->x + (direction == RIGHT) - (direction == LEFT);
+	new_y = e->y + (direction == DOWN) - (direction == UP);
+	o = ft_arraylist_get(ft_arraylist_get(game->map.chart, new_y), new_x);
+	if (!o)
+	{
+		for (size_t i = 0; i < ft_arraylist_len(e->drawables); i++)
+		{
+			t_drawable *d = ft_arraylist_get(e->drawables, i);
+			d->img->instances[d->i].x = 32 * new_x;
+			d->img->instances[d->i].y = 32 * new_y;
+		}
 	}
 }
 
@@ -172,7 +196,16 @@ int		entity_drawables_init(t_entity *entity, t_game *game)
 
 t_direction entity_hero_move(t_entity *entity, t_game *game)
 {
-	return (DOWN);
+	if (mlx_is_key_down(game->mlx, MLX_KEY_W))
+		return (UP);
+	else if (mlx_is_key_down(game->mlx, MLX_KEY_D))
+		return (RIGHT);
+	else if (mlx_is_key_down(game->mlx, MLX_KEY_S))
+		return (DOWN);
+	else if (mlx_is_key_down(game->mlx, MLX_KEY_A))
+		return (LEFT);
+	else
+		return (IDLE);
 }
 
 void	entity_hero_components_destroy(t_component *component)

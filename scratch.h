@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 06:58:58 by maurodri          #+#    #+#             */
-/*   Updated: 2024/02/15 18:49:52 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/02/15 19:20:00 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,8 @@ typedef enum e_direction
 	UP,
 	RIGHT,
 	DOWN,
-	LEFT
+	LEFT,
+	IDLE
 }	t_direction;
 
 typedef t_direction	(*t_move_fun)(t_entity *entity, t_game *game);
