@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/27 17:52:00 by maurodri          #+#    #+#             */
-/*   Updated: 2024/02/11 19:28:29 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/02/18 18:44:18 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,15 @@ void		*ft_arraylist_get(t_arraylist alst, size_t at);
 t_arraylist	ft_arraylist_add(t_arraylist alst, void *element);
 t_arraylist	ft_arraylist_addat(t_arraylist alst, void *element, size_t at);
 void		ft_arraylist_replace(t_arraylist alst, void *element, size_t at);
+void		ft_arraylist_switch(t_arraylist alst, void *element, size_t at);
+void 		ft_arraylist_switch2d(
+				t_arraylist alst, void *element, size_t row, size_t col);
+void		ft_arraylist_swap(t_arraylist alst, size_t at1, size_t at2);
+void		ft_arraylist_swap2d(t_arraylist alst, size_t at1[2], size_t at2[2]);
 void		*ft_arraylist_pop(t_arraylist alst);
 void		*ft_arraylist_peek(t_arraylist alst);
 void		ft_arraylist_foreach(t_arraylist alst, void (*fun) (void *));
+void		ft_arraylist_foreach2d(t_arraylist alst, void (*fun) (void *));
 int			ft_arraylist_transform(
 				t_arraylist alst,
 				void *(*fun)(void *),
