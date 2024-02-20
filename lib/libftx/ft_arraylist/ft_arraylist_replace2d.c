@@ -1,19 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_arraylist_switch2d.c                            :+:      :+:    :+:   */
+/*   ft_arraylist_replace2d.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maurodri <maurodri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maurodri <maurodri@student.42sp...>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/18 18:25:29 by maurodri          #+#    #+#             */
-/*   Updated: 2024/02/19 20:52:40 by maurodri         ###   ########.fr       */
+/*   Created: 2024/02/19 20:50:06 by maurodri          #+#    #+#             */
+/*   Updated: 2024/02/19 20:52:42 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "collection/ft_arraylist.h"
 #include "ft_arraylist_internal.h"
 
-void ft_arraylist_switch2d(
+void ft_arraylist_replace2d(
 	t_arraylist alst, void *element, size_t row, size_t col)
 {
 	t_arraylist	ilst;
@@ -23,5 +23,6 @@ void ft_arraylist_switch2d(
 	ilst = alst->arr[row];
 	if (col >= ilst->size)
 		return ;
+	ilst->destroy_element(ilst->arr[col]);
 	ilst->arr[col] = element;
 }

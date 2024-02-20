@@ -6,12 +6,13 @@
 /*   By: maurodri <maurodri@student.42sp...>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 15:28:12 by maurodri          #+#    #+#             */
-/*   Updated: 2024/02/15 21:50:59 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/02/19 23:09:27 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <fcntl.h>
 #include <MLX42/MLX42.h>
+#include <stddef.h>
 #include <stdint.h>
 #include "collection/ft_arraylist.h"
 #include "ft_memlib.h"
@@ -48,38 +49,135 @@ int	colision_check(int32_t x, int32_t y, t_entity *e)
 	return (x == e->x && y == e->y);
 }
 
-void	loop(t_game *game)
+void	entity_hero_animate(t_entity *hero)
 {
-	t_entity *e = game->map.hero;
-	t_entity *o;
-	t_moveable *moveable;
-	t_component *component;
-	t_direction direction;
-	int32_t		new_x;
-	int32_t		new_y;
-	
-	for (size_t i = 0; i < ft_arraylist_len(e->drawables); i++)
+	t_drawable	*dwble;
+	size_t		i;
+	size_t		len;
+
+	i = 0;
+	len = ft_arraylist_len(hero->drawables);
+	while (i < len)
 	{
-		t_drawable *d = ft_arraylist_get(e->drawables, i);
-		d->img->instances[d->i].enabled = ((size_t) mlx_get_time()) % 2 == i;
+		dwble = ft_arraylist_get(hero->drawables, i);
+		dwble->img->instances[dwble->i].enabled = ((size_t) mlx_get_time()) % 2 == i;
+		i++;
 	}
-	component = ft_arraylist_get(game->map.hero->components, 0);
-	moveable = component->component;
-	direction = moveable->move(e, game);
-	if (direction == IDLE)
-		return;
-	new_x = e->x + (direction == RIGHT) - (direction == LEFT);
-	new_y = e->y + (direction == DOWN) - (direction == UP);
-	o = ft_arraylist_get(ft_arraylist_get(game->map.chart, new_y), new_x);
-	if (!o)
+}
+
+t_moveable *entity_hero_get_moveable(t_entity *hero)
+{
+	t_component	*component;
+
+	component = ft_arraylist_get(hero->components, 0);
+	return (component->cmp);
+}
+
+t_entity	*map_get_entity(t_game *game, int x, int y)
+{
+	return ft_arraylist_get(ft_arraylist_get(game->map.chart, y),x);
+}
+
+void	system_hero_wait_input(t_game *game, t_entity *hero)
+{
+	t_direction direction;
+	t_moveable *moveable;
+
+	if (game->state.acc_time < 0.18)
 	{
-		for (size_t i = 0; i < ft_arraylist_len(e->drawables); i++)
+		game->state.acc_time += game->mlx->delta_time;
+	}
+	else
+	{
+		moveable = entity_hero_get_moveable(hero);
+		direction = moveable->move(hero, game);
+		if (direction != IDLE)
 		{
-			t_drawable *d = ft_arraylist_get(e->drawables, i);
-			d->img->instances[d->i].x = 32 * new_x;
-			d->img->instances[d->i].y = 32 * new_y;
+			game->state.gst = HERO_MOVE;
+			game->state.acc_time = 0;
+			moveable->direction = direction;
 		}
 	}
+}
+
+void drawables_update_position(t_arraylist drawables, int x, int y)
+{
+	size_t		i;
+	size_t		len;
+	t_drawable	*dwble;
+
+	i = 0;
+	len = ft_arraylist_len(drawables);
+	while (i < len)
+	{
+		dwble = ft_arraylist_get(drawables, i);
+		dwble->img->instances[dwble->i].x = 32 * x;
+		dwble->img->instances[dwble->i].y = 32 * y;
+		i++;
+	}
+}
+
+void	entity_hero_collect_item(
+	t_game *game, t_entity *item, size_t hero_pos[2], size_t item_pos[2])
+{
+	t_entity	*hero;
+	t_drawable	*itm_dwble;
+	hero = game->map.hero;
+	
+	itm_dwble = ft_arraylist_get(item->drawables, 0);
+	ft_printf("itm_dwble->i %d\n", itm_dwble->i);
+	itm_dwble->img->instances[itm_dwble->i].enabled = false;
+	ft_arraylist_replace2d(game->map.chart, hero, item_pos[0], item_pos[1]);
+	ft_arraylist_switch2d(game->map.chart, NULL, hero_pos[0], hero_pos[1]);
+	game->state.collectables_count--;
+	ft_printf("collectables_count: %10d\n", game->state.collectables_count);
+}
+
+// pos[y, x]
+void	system_hero_move(t_game *game, t_entity *hero)
+{
+	size_t		new_pos[2];
+	size_t		old_pos[2];
+	t_moveable	*m;
+	t_entity	*other;
+
+	m = entity_hero_get_moveable(hero);
+	new_pos[1] = hero->x + (m->direction == RIGHT) - (m->direction == LEFT);
+	new_pos[0] = hero->y + (m->direction == DOWN) - (m->direction == UP);
+	m->direction = IDLE;
+	other = map_get_entity(game, new_pos[1], new_pos[0]);
+	if (!other || other->type == ITEM)
+	{
+		old_pos[1] = hero->x;
+		old_pos[0] = hero->y;
+		if (!other)
+			ft_arraylist_swap2d(game->map.chart, new_pos, old_pos);
+		else
+			entity_hero_collect_item(game, other, old_pos, new_pos);
+		hero->x = (int) new_pos[1];
+		hero->y = (int) new_pos[0];
+		drawables_update_position(hero->drawables, hero->x, hero->y);
+		game->state.move_count++;
+		ft_printf("movement count: %5d\n", game->state.move_count);
+	}
+	game->state.gst = HERO_WAIT;
+}
+
+void	system_loop(t_game *game)
+{
+	t_entity *e;
+
+	if (mlx_is_key_down(game->mlx, MLX_KEY_ESCAPE))
+	{
+		game->exit_status = OK;
+		mlx_close_window(game->mlx);
+	}
+	e = game->map.hero;
+	entity_hero_animate(e);
+	if (game->state.gst == HERO_WAIT)
+		system_hero_wait_input(game, e);
+	else if (game->state.gst == HERO_MOVE)
+ 		system_hero_move(game, e);
 }
 
 int32_t	context_load_asset(
@@ -174,21 +272,29 @@ t_entity_type	entity_type_by_ch(char ch)
 	return (type);
 }
 
-int		entity_drawables_init(t_entity *entity, t_game *game)
+int		entity_drawables_init(t_entity *entity, t_arraylist drawables_ctx, t_game *game)
 {
-	t_drawable	*drawable;
+	t_drawable	*drawable_ctx;
+	t_drawable	*drawable_copy;
 	size_t		i;
 
 	i = 0;
-	while (i < ft_arraylist_len(entity->drawables))
+	while (i < ft_arraylist_len(drawables_ctx))
 	{
-		drawable = ft_arraylist_get(
-				entity->drawables, i);
-		drawable->i = mlx_image_to_window(
-				game->mlx, drawable->img, entity->x * 32, entity->y * 32);
-		if (drawable->i < 0)
+		drawable_ctx = ft_arraylist_get(
+				drawables_ctx, i);
+		drawable_copy = malloc(sizeof(t_drawable));
+		if (!drawable_copy)
 			return (0);
-		drawable->img->instances[drawable->i].enabled = i == 0;
+		entity->drawables = ft_arraylist_add(entity->drawables, drawable_copy);
+		drawable_copy->img = drawable_ctx->img;
+		drawable_copy->i = mlx_image_to_window(
+				game->mlx, drawable_copy->img, entity->x * 32, entity->y * 32);
+		if (entity->type == ITEM)
+			ft_printf("======%d\n", drawable_copy->i);
+		if (drawable_copy->i < 0)
+			return (0);
+		drawable_copy->img->instances[drawable_copy->i].enabled = i == 0;
 		i++;
 	}
 	return (1);
@@ -196,6 +302,7 @@ int		entity_drawables_init(t_entity *entity, t_game *game)
 
 t_direction entity_hero_move(t_entity *entity, t_game *game)
 {
+	(void) entity;
 	if (mlx_is_key_down(game->mlx, MLX_KEY_W))
 		return (UP);
 	else if (mlx_is_key_down(game->mlx, MLX_KEY_D))
@@ -211,11 +318,11 @@ t_direction entity_hero_move(t_entity *entity, t_game *game)
 void	entity_hero_components_destroy(t_component *component)
 {
 	if (component->type == MOVEABLE)
-		free(component->component);
+		free(component->cmp);
 	free(component);
 }
 
-int	entity_hero_components_init(t_entity *entity, t_game *game)
+int	entity_hero_components_init(t_entity *entity)
 {
 	t_component *component;
 	t_moveable	*moveable;
@@ -230,7 +337,7 @@ int	entity_hero_components_init(t_entity *entity, t_game *game)
 	moveable = malloc(sizeof(t_moveable));
 	if (!moveable)
 		return (0);
-	component->component = moveable;
+	component->cmp = moveable;
 	moveable->move = entity_hero_move;
 	entity->components = ft_arraylist_add(entity->components, component);
 	return (1);
@@ -239,7 +346,7 @@ int	entity_hero_components_init(t_entity *entity, t_game *game)
 int	entity_components_init(t_entity *entity, t_game *game)
 {
 	if (entity->type == HERO)
-		return (entity_hero_components_init(entity, game));
+		return (entity_hero_components_init(entity));
 	else
 		return (1);
 }
@@ -247,21 +354,25 @@ int	entity_components_init(t_entity *entity, t_game *game)
 t_entity	*entity_new(size_t y, size_t x, t_entity_type *type, t_game *game)
 {
 	t_entity		*entity;
-
+	t_arraylist 	drawables;
+	
 	entity = malloc(sizeof(t_entity));
 	if (!entity)
 		return (NULL);
 	entity->type = *type;
-	entity->drawables = ft_arraylist_get(game->ctx.drawables, entity->type);
+	drawables = ft_arraylist_get(game->ctx.drawables, entity->type);
+	entity->drawables = ft_arraylist_new(free);
 	entity->x = x;
 	entity->y = y;
 	entity->components = NULL;
-	if (!entity_drawables_init(entity, game))
+	if (!entity_drawables_init(entity, drawables, game))
 		return (NULL);
 	if (!entity_components_init(entity, game))
 		return (NULL);
 	if (entity->type == HERO)
 		game->map.hero = entity;
+	else if (entity->type == ITEM)
+		game->state.collectables_count++;
 	return (entity);
 }
 
@@ -271,13 +382,18 @@ void	entity_destroy(t_entity *entity)
 		return ;
 	if (entity->components)
 		ft_arraylist_destroy(entity->components);
+	if (entity->drawables)
+		ft_arraylist_destroy(entity->drawables);
 	free(entity);
 }
 
 t_entity	*map_remove_floor(t_entity *entity)
 {
 	if (entity->type == FLOOR)
-		return (ft_free_retnull(entity));
+	{
+		entity_destroy(entity);
+		return (NULL);
+	}
 	else
 		return entity;
 }
@@ -354,6 +470,7 @@ int32_t	map_init(t_map *map)
 
 int32_t	system_init(t_game *game)
 {
+	game->state.collectables_count = 0;
 	game->ctx.drawables = ft_arraylist_new((t_vfun1) ft_arraylist_destroy);
 	game->ctx.textures = ft_arraylist_new((t_vfun1) mlx_delete_texture);
 	if (!game->ctx.drawables || !game->ctx.textures)
@@ -367,8 +484,10 @@ int32_t	system_init(t_game *game)
 		return (system_panic(game, ERROR, "Failed to init assets"));
 	if (!entities_init(game))
 		return (system_panic(game, ERROR, "Failed to init entities"));
-	mlx_loop_hook(game->mlx, (t_vfun1) loop, game);
+	mlx_loop_hook(game->mlx, (t_vfun1) system_loop, game);
 	mlx_close_hook(game->mlx, system_exit_ok, game);
+	game->state.gst = HERO_WAIT;
+	game->state.move_count = 0;
 	return (OK);
 }
 

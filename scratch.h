@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 06:58:58 by maurodri          #+#    #+#             */
-/*   Updated: 2024/02/15 19:20:00 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/02/19 20:39:24 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,20 @@ typedef struct s_drawable
 	mlx_image_t	*img;
 }	t_drawable;
 
+typedef enum s_game_state
+{
+	HERO_WAIT,
+	HERO_MOVE
+}	t_game_state;
+
+typedef struct s_state
+{
+	t_game_state	gst;
+	double			acc_time;
+	int				move_count;
+	int				collectables_count;
+}	t_state;
+
 typedef struct s_context
 {
 	t_arraylist	drawables;
@@ -72,6 +86,7 @@ typedef struct s_game
 	mlx_t			*mlx;
 	t_map			map;
 	t_context		ctx;
+	t_state			state;
 	t_exit_status	exit_status;
 }	t_game;
 
@@ -83,7 +98,7 @@ typedef enum e_component_type
 typedef struct s_component
 {
 	t_component_type	type;
-	void				*component;
+	void				*cmp;
 }	t_component;
 
 typedef enum e_direction
