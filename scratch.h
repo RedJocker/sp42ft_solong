@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 06:58:58 by maurodri          #+#    #+#             */
-/*   Updated: 2024/02/19 20:39:24 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/02/21 18:00:20 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,9 +62,8 @@ typedef struct s_state
 typedef struct s_context
 {
 	t_arraylist	drawables;
-	t_arraylist textures;
+	t_arraylist	textures;
 }	t_context;
-
 
 typedef struct s_entity
 {
@@ -77,7 +76,7 @@ typedef struct s_entity
 
 typedef struct s_map
 {
-	t_arraylist chart;
+	t_arraylist	chart;
 	t_entity	*hero;
 }	t_map;
 
