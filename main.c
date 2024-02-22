@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42sp...>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 15:28:12 by maurodri          #+#    #+#             */
-/*   Updated: 2024/02/21 21:06:57 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/02/21 23:21:45 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int32_t	system_panic(t_game *game, t_exit_status exit_code, char *msg)
 	return (exit_code);
 }
 
-void	system_exit_ok(void *param)
+void	system_quit_ok(void *param)
 {
 	t_game	*game;
 
@@ -131,6 +131,8 @@ void	entity_hero_collect_item(
 	ft_arraylist_replace2d(game->map.chart, hero, item_pos[0], item_pos[1]);
 	ft_arraylist_switch2d(game->map.chart, NULL, hero_pos[0], hero_pos[1]);
 	game->state.collectables_count--;
+	if (game->state.collectables_count == 0)
+		game->state.gst = EXIT_ENABLE;
 	//ft_printf("collectables_count: %10d\n", game->state.collectables_count);
 }
 
@@ -161,6 +163,19 @@ void	system_hero_move(t_game *game, t_entity *hero)
 		game->state.move_count++;
 		ft_printf("movement count: %5d\n", game->state.move_count);
 	}
+	if (game->state.gst == HERO_MOVE)
+		game->state.gst = HERO_WAIT;
+}
+
+void	system_exit_enable(t_game *game)
+{
+	t_entity	*exit;
+	t_drawable	*drawable;
+	
+	exit = game->map.exit;
+	ft_arraylist_switch2d(game->map.chart, exit, exit->y, exit->x);
+	drawable = ft_arraylist_get(exit->drawables, 0);
+	drawable->img->instances[drawable->i].enabled = 1;
 	game->state.gst = HERO_WAIT;
 }
 
@@ -179,6 +194,8 @@ void	system_loop(t_game *game)
 		system_hero_wait_input(game, e);
 	else if (game->state.gst == HERO_MOVE)
 		system_hero_move(game, e);
+	else if (game->state.gst == EXIT_ENABLE)
+		system_exit_enable(game);
 }
 
 int32_t	context_load_asset(
@@ -247,7 +264,9 @@ int32_t	context_init(t_context *ctx, mlx_t *mlx)
 			is_ok = context_load_asset(ctx, "./assets/item.png", mlx, ITEM);
 		else if (i == WALL)
 			is_ok = context_load_asset(ctx, "./assets/wall.png", mlx, WALL);
-		else
+		else if (i == EXIT)
+			is_ok = context_load_asset(ctx, "./assets/exit.png", mlx, EXIT);
+		else if (i > EXIT)
 			break ;
 		if (!is_ok)
 			return (0);
@@ -289,12 +308,15 @@ int	entity_drawables_init(
 		if (!drawable_copy)
 			return (0);
 		entity->drawables = ft_arraylist_add(entity->drawables, drawable_copy);
+		if (!entity->drawables)
+			return (0);
 		drawable_copy->img = drawable_ctx->img;
 		drawable_copy->i = mlx_image_to_window(
 				game->mlx, drawable_copy->img, entity->x * 32, entity->y * 32);
 		if (drawable_copy->i < 0)
 			return (0);
-		drawable_copy->img->instances[drawable_copy->i].enabled = i == 0;
+		drawable_copy->img->instances[drawable_copy->i].enabled = i == 0
+			&& entity->type != EXIT;
 		i++;
 	}
 	return (1);
@@ -372,6 +394,8 @@ t_entity	*entity_new(size_t y, size_t x, t_entity_type *type, t_game *game)
 		return (NULL);
 	if (entity->type == HERO)
 		game->map.hero = entity;
+	else if (entity->type == EXIT)
+		game->map.exit = entity;
 	else if (entity->type == ITEM)
 		game->state.collectables_count++;
 	return (entity);
@@ -379,7 +403,7 @@ t_entity	*entity_new(size_t y, size_t x, t_entity_type *type, t_game *game)
 
 void	entity_destroy(t_entity *entity)
 {
-	if (!entity)
+	if (!entity || entity->type == EXIT)
 		return ;
 	if (entity->components)
 		ft_arraylist_destroy(entity->components);
@@ -388,6 +412,18 @@ void	entity_destroy(t_entity *entity)
 	free(entity);
 }
 
+void	entity_exit_destroy(t_entity *entity)
+{
+	if (!entity || entity->type != EXIT)
+		return ;
+	if (entity->components)
+		ft_arraylist_destroy(entity->components);
+	if (entity->drawables)
+		ft_arraylist_destroy(entity->drawables);
+	free(entity);
+}
+
+
 t_entity	*map_remove_floor(t_entity *entity)
 {
 	if (entity->type == FLOOR)
@@ -395,6 +431,8 @@ t_entity	*map_remove_floor(t_entity *entity)
 		entity_destroy(entity);
 		return (NULL);
 	}
+	else if (entity->type == EXIT)
+		return (NULL);
 	else
 		return (entity);
 }
@@ -487,7 +525,7 @@ int32_t	system_init(t_game *game)
 	if (!entities_init(game))
 		return (system_panic(game, ERROR, "Failed to init entities"));
 	mlx_loop_hook(game->mlx, (t_vfun1) system_loop, game);
-	mlx_close_hook(game->mlx, system_exit_ok, game);
+	mlx_close_hook(game->mlx, system_quit_ok, game);
 	game->state.gst = HERO_WAIT;
 	game->state.move_count = 0;
 	return (OK);
@@ -504,5 +542,6 @@ int32_t	main(void)
 	ft_arraylist_destroy(game.map.chart);
 	if (game.mlx)
 		mlx_terminate(game.mlx);
+	entity_exit_destroy(game.map.exit);
 	return (game.exit_status);
 }

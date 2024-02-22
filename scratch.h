@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 06:58:58 by maurodri          #+#    #+#             */
-/*   Updated: 2024/02/21 18:00:20 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/02/21 22:25:13 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,8 @@ typedef struct s_drawable
 typedef enum s_game_state
 {
 	HERO_WAIT,
-	HERO_MOVE
+	HERO_MOVE,
+	EXIT_ENABLE
 }	t_game_state;
 
 typedef struct s_state
@@ -78,6 +79,7 @@ typedef struct s_map
 {
 	t_arraylist	chart;
 	t_entity	*hero;
+	t_entity	*exit;
 }	t_map;
 
 typedef struct s_game
