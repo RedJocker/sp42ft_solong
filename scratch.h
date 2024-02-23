@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 06:58:58 by maurodri          #+#    #+#             */
-/*   Updated: 2024/02/21 22:25:13 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/02/22 18:13:11 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ typedef struct s_context
 {
 	t_arraylist	drawables;
 	t_arraylist	textures;
+	int			block_size;
 }	t_context;
 
 typedef struct s_entity

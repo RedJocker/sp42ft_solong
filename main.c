@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42sp...>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 15:28:12 by maurodri          #+#    #+#             */
-/*   Updated: 2024/02/21 23:21:45 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/02/22 20:30:58 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -468,6 +468,8 @@ void	*map_transform_string_line(void *s)
 	while (i < len)
 	{
 		ch = ((char *)s)[i];
+		if (ch == '\n')
+			break ;
 		type = malloc(sizeof(t_entity_type));
 		*type = entity_type_by_ch(ch);
 		if (!type)
@@ -478,6 +480,17 @@ void	*map_transform_string_line(void *s)
 		i++;
 	}
 	return (lst_type);
+}
+
+size_t	map_height(t_map *map)
+{
+	return (ft_arraylist_len(map->chart));
+}
+
+size_t	map_width(t_map *map)
+{
+	return (ft_arraylist_len(
+				ft_arraylist_get(map->chart, 0)));
 }
 
 int32_t	map_init(t_map *map)
@@ -515,11 +528,14 @@ int32_t	system_init(t_game *game)
 	if (!game->ctx.drawables || !game->ctx.textures)
 		return (
 			system_panic(game, MEMORY_ERROR, "No memory to init drawables"));
-	game->mlx = mlx_init(WIDTH, HEIGHT, "So Long", true);
-	if (!game->mlx)
-		return (system_panic(game, MLX_ERROR, NULL));
+	game->ctx.block_size = 32;
 	if (!map_init(&game->map))
 		return (system_panic(game, ERROR, "Failed to init map"));
+	game->mlx = mlx_init(game->ctx.block_size * map_width(&game->map),
+						 game->ctx.block_size * map_height(&game->map),
+						 "So Long", true);
+	if (!game->mlx)
+		return (system_panic(game, MLX_ERROR, NULL));
 	if (!context_init(&game->ctx, game->mlx))
 		return (system_panic(game, ERROR, "Failed to init assets"));
 	if (!entities_init(game))
