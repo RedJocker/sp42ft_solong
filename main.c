@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42sp...>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 15:28:12 by maurodri          #+#    #+#             */
-/*   Updated: 2024/02/22 20:30:58 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/02/26 21:48:09 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,11 +42,6 @@ void	system_quit_ok(void *param)
 	game->exit_status = OK;
 	if (game->mlx)
 		mlx_close_window(game->mlx);
-}
-
-int	colision_check(int32_t x, int32_t y, t_entity *e)
-{
-	return (x == e->x && y == e->y);
 }
 
 void	entity_hero_animate(t_entity *hero)
@@ -101,24 +96,24 @@ void	system_hero_wait_input(t_game *game, t_entity *hero)
 	}
 }
 
-void	drawables_update_position(t_arraylist drawables, int x, int y)
+void	drawables_update_position(t_arraylist drawables, int x, int y, t_context ctx)
 {
 	size_t		i;
 	size_t		len;
 	t_drawable	*dwble;
-
+	
 	i = 0;
 	len = ft_arraylist_len(drawables);
 	while (i < len)
 	{
 		dwble = ft_arraylist_get(drawables, i);
-		dwble->img->instances[dwble->i].x = 32 * x;
-		dwble->img->instances[dwble->i].y = 32 * y;
+		dwble->img->instances[dwble->i].x = x * ctx.block_size + ctx.window_x_offset;
+		dwble->img->instances[dwble->i].y = y * ctx.block_size + ctx.window_y_offset;
 		i++;
 	}
 }
 
-void	entity_hero_collect_item(
+void	map_hero_collect_item(
 	t_game *game, t_entity *item, size_t hero_pos[2], size_t item_pos[2])
 {
 	t_entity	*hero;
@@ -136,6 +131,29 @@ void	entity_hero_collect_item(
 	//ft_printf("collectables_count: %10d\n", game->state.collectables_count);
 }
 
+void map_hero_move_to_floor(
+	t_game *game, size_t new_pos[2], size_t old_pos[2])
+{
+	ft_arraylist_swap2d(game->map.chart, new_pos, old_pos);
+}
+
+void	map_hero_move_to_exit(
+	t_game *game)
+{
+	game->state.gst = GAME_END;
+}
+
+void	map_hero_switch_position(
+	t_game *game, t_entity *other, size_t new_pos[2], size_t old_pos[2])
+{	
+	if (!other)
+		map_hero_move_to_floor(game, new_pos, old_pos);
+	else if (other->type == ITEM)
+		map_hero_collect_item(game, other, old_pos, new_pos);
+	else if (other->type == EXIT)
+		map_hero_move_to_exit(game);
+}
+
 // pos[y, x]
 void	system_hero_move(t_game *game, t_entity *hero)
 {
@@ -149,17 +167,15 @@ void	system_hero_move(t_game *game, t_entity *hero)
 	new_pos[0] = hero->y + (m->direction == DOWN) - (m->direction == UP);
 	m->direction = IDLE;
 	other = map_get_entity(game, new_pos[1], new_pos[0]);
-	if (!other || other->type == ITEM)
+	
+	if (!other || other->type == ITEM || other->type == EXIT)
 	{
 		old_pos[1] = hero->x;
 		old_pos[0] = hero->y;
-		if (!other)
-			ft_arraylist_swap2d(game->map.chart, new_pos, old_pos);
-		else
-			entity_hero_collect_item(game, other, old_pos, new_pos);
+		map_hero_switch_position(game, other, new_pos, old_pos);
 		hero->x = (int) new_pos[1];
 		hero->y = (int) new_pos[0];
-		drawables_update_position(hero->drawables, hero->x, hero->y);
+		drawables_update_position(hero->drawables, hero->x, hero->y, game->ctx);
 		game->state.move_count++;
 		ft_printf("movement count: %5d\n", game->state.move_count);
 	}
@@ -179,6 +195,16 @@ void	system_exit_enable(t_game *game)
 	game->state.gst = HERO_WAIT;
 }
 
+void	system_game_end(t_game *game)
+{
+	t_drawable		*exit_drawable;
+	int				is_enabled;
+
+	exit_drawable = ft_arraylist_get(game->map.exit->drawables, 0);
+	is_enabled = ((int) mlx_get_time()) % 3 == 0;
+	exit_drawable->img->instances[exit_drawable->i].enabled = is_enabled;
+}
+
 void	system_loop(t_game *game)
 {
 	t_entity	*e;
@@ -196,6 +222,8 @@ void	system_loop(t_game *game)
 		system_hero_move(game, e);
 	else if (game->state.gst == EXIT_ENABLE)
 		system_exit_enable(game);
+	else if (game->state.gst == GAME_END)
+		system_game_end(game);
 }
 
 int32_t	context_load_asset(
@@ -298,7 +326,9 @@ int	entity_drawables_init(
 	t_drawable	*drawable_ctx;
 	t_drawable	*drawable_copy;
 	size_t		i;
-
+	int			x;
+	int			y;
+	
 	i = 0;
 	while (i < ft_arraylist_len(drawables_ctx))
 	{
@@ -311,8 +341,10 @@ int	entity_drawables_init(
 		if (!entity->drawables)
 			return (0);
 		drawable_copy->img = drawable_ctx->img;
+		x = entity->x * game->ctx.block_size + game->ctx.window_x_offset;
+		y = entity->y * game->ctx.block_size + game->ctx.window_y_offset;
 		drawable_copy->i = mlx_image_to_window(
-				game->mlx, drawable_copy->img, entity->x * 32, entity->y * 32);
+				game->mlx, drawable_copy->img, x, y);
 		if (drawable_copy->i < 0)
 			return (0);
 		drawable_copy->img->instances[drawable_copy->i].enabled = i == 0
@@ -368,6 +400,7 @@ int	entity_hero_components_init(t_entity *entity)
 
 int	entity_components_init(t_entity *entity, t_game *game)
 {
+	(void) game;
 	if (entity->type == HERO)
 		return (entity_hero_components_init(entity));
 	else
@@ -520,6 +553,27 @@ int32_t	map_init(t_map *map)
 	return (1);
 }
 
+void	sytem_init_window_size(t_game *game)
+{	
+	game->ctx.block_size = 32;
+	game->ctx.window_width = game->ctx.block_size * map_width(&game->map);
+	game->ctx.window_height = game->ctx.block_size * map_height(&game->map);
+	if (game->ctx.window_width < WIDTH)
+	{
+		game->ctx.window_x_offset = (WIDTH - game->ctx.window_width) / 2;
+		game->ctx.window_width = WIDTH;
+	}
+	else
+		game->ctx.window_x_offset = 0;
+	if (game->ctx.window_height < HEIGHT)
+	{
+		game->ctx.window_y_offset = (HEIGHT - game->ctx.window_height) / 2;
+		game->ctx.window_height = HEIGHT;
+	}
+	else
+		game->ctx.window_y_offset = 0;
+}
+
 int32_t	system_init(t_game *game)
 {
 	game->state.collectables_count = 0;
@@ -528,11 +582,11 @@ int32_t	system_init(t_game *game)
 	if (!game->ctx.drawables || !game->ctx.textures)
 		return (
 			system_panic(game, MEMORY_ERROR, "No memory to init drawables"));
-	game->ctx.block_size = 32;
 	if (!map_init(&game->map))
 		return (system_panic(game, ERROR, "Failed to init map"));
-	game->mlx = mlx_init(game->ctx.block_size * map_width(&game->map),
-						 game->ctx.block_size * map_height(&game->map),
+	sytem_init_window_size(game);
+	game->mlx = mlx_init(game->ctx.window_width,
+						 game->ctx.window_height,
 						 "So Long", true);
 	if (!game->mlx)
 		return (system_panic(game, MLX_ERROR, NULL));

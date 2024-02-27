@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 06:58:58 by maurodri          #+#    #+#             */
-/*   Updated: 2024/02/22 18:13:11 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/02/26 21:32:53 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,8 @@ typedef enum s_game_state
 {
 	HERO_WAIT,
 	HERO_MOVE,
-	EXIT_ENABLE
+	EXIT_ENABLE,
+	GAME_END,
 }	t_game_state;
 
 typedef struct s_state
@@ -65,6 +66,10 @@ typedef struct s_context
 	t_arraylist	drawables;
 	t_arraylist	textures;
 	int			block_size;
+	int			window_height;
+	int			window_width;
+	int			window_y_offset;
+	int			window_x_offset;
 }	t_context;
 
 typedef struct s_entity
