@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 06:58:58 by maurodri          #+#    #+#             */
-/*   Updated: 2024/02/26 21:32:53 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/02/29 20:40:31 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,8 @@ typedef enum s_game_state
 {
 	HERO_WAIT,
 	HERO_MOVE,
+	HERO_UPDATE_POS,
+	MAP_UPDATE_POS,
 	EXIT_ENABLE,
 	GAME_END,
 }	t_game_state;

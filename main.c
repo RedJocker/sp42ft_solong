@@ -6,14 +6,12 @@
 /*   By: maurodri <maurodri@student.42sp...>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 15:28:12 by maurodri          #+#    #+#             */
-/*   Updated: 2024/02/26 21:48:09 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/02/29 21:35:47 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <fcntl.h>
 #include <MLX42/MLX42.h>
-#include <stddef.h>
-#include <stdint.h>
 #include "collection/ft_arraylist.h"
 #include "ft_memlib.h"
 #include "get_next_line.h"
@@ -21,6 +19,12 @@
 #include "ft_stdio.h"
 #include "ft_util.h"
 #include "ft_string.h"
+
+int32_t system_invalid(char *err_msg)
+{
+	ft_printf("ERROR: %s\n", err_msg);
+	return (0);
+}
 
 int32_t	system_panic(t_game *game, t_exit_status exit_code, char *msg)
 {
@@ -79,7 +83,7 @@ void	system_hero_wait_input(t_game *game, t_entity *hero)
 	t_direction	direction;
 	t_moveable	*moveable;
 
-	if (game->state.acc_time < 0.18)
+	if (game->state.acc_time < 0.1)
 	{
 		game->state.acc_time += game->mlx->delta_time;
 	}
@@ -96,22 +100,36 @@ void	system_hero_wait_input(t_game *game, t_entity *hero)
 	}
 }
 
-void	drawables_update_position(t_arraylist drawables, int x, int y, t_context ctx)
+void	drawables_update_position(
+	t_arraylist drawables, int x, int y, t_context ctx)
 {
 	size_t		i;
 	size_t		len;
 	t_drawable	*dwble;
-	
+
 	i = 0;
 	len = ft_arraylist_len(drawables);
 	while (i < len)
 	{
 		dwble = ft_arraylist_get(drawables, i);
-		dwble->img->instances[dwble->i].x = x * ctx.block_size + ctx.window_x_offset;
-		dwble->img->instances[dwble->i].y = y * ctx.block_size + ctx.window_y_offset;
+		dwble->img->instances[dwble->i].x = (
+			x * ctx.block_size + ctx.window_x_offset);
+		dwble->img->instances[dwble->i].y = (
+			y * ctx.block_size + ctx.window_y_offset);
 		i++;
 	}
 }
+
+
+void	system_hero_update_pos(t_game *game)
+{
+	drawables_update_position(
+		game->map.hero->drawables,
+		game->map.hero->x,
+		game->map.hero->y,
+		game->ctx);
+}
+
 
 void	map_hero_collect_item(
 	t_game *game, t_entity *item, size_t hero_pos[2], size_t item_pos[2])
@@ -121,14 +139,15 @@ void	map_hero_collect_item(
 
 	hero = game->map.hero;
 	itm_dwble = ft_arraylist_get(item->drawables, 0);
-	//ft_printf("itm_dwble->i %d\n", itm_dwble->i);
 	itm_dwble->img->instances[itm_dwble->i].enabled = false;
 	ft_arraylist_replace2d(game->map.chart, hero, item_pos[0], item_pos[1]);
 	ft_arraylist_switch2d(game->map.chart, NULL, hero_pos[0], hero_pos[1]);
 	game->state.collectables_count--;
 	if (game->state.collectables_count == 0)
+	{
 		game->state.gst = EXIT_ENABLE;
-	//ft_printf("collectables_count: %10d\n", game->state.collectables_count);
+		system_hero_update_pos(game);
+	}
 }
 
 void map_hero_move_to_floor(
@@ -159,6 +178,7 @@ void	system_hero_move(t_game *game, t_entity *hero)
 {
 	size_t		new_pos[2];
 	size_t		old_pos[2];
+	int32_t		test_pos[2];
 	t_moveable	*m;
 	t_entity	*other;
 
@@ -167,7 +187,7 @@ void	system_hero_move(t_game *game, t_entity *hero)
 	new_pos[0] = hero->y + (m->direction == DOWN) - (m->direction == UP);
 	m->direction = IDLE;
 	other = map_get_entity(game, new_pos[1], new_pos[0]);
-	
+	mlx_get_window_pos(game->mlx, test_pos + 1, test_pos);
 	if (!other || other->type == ITEM || other->type == EXIT)
 	{
 		old_pos[1] = hero->x;
@@ -175,12 +195,11 @@ void	system_hero_move(t_game *game, t_entity *hero)
 		map_hero_switch_position(game, other, new_pos, old_pos);
 		hero->x = (int) new_pos[1];
 		hero->y = (int) new_pos[0];
-		drawables_update_position(hero->drawables, hero->x, hero->y, game->ctx);
 		game->state.move_count++;
 		ft_printf("movement count: %5d\n", game->state.move_count);
 	}
 	if (game->state.gst == HERO_MOVE)
-		game->state.gst = HERO_WAIT;
+		game->state.gst = HERO_UPDATE_POS;
 }
 
 void	system_exit_enable(t_game *game)
@@ -192,7 +211,7 @@ void	system_exit_enable(t_game *game)
 	ft_arraylist_switch2d(game->map.chart, exit, exit->y, exit->x);
 	drawable = ft_arraylist_get(exit->drawables, 0);
 	drawable->img->instances[drawable->i].enabled = 1;
-	game->state.gst = HERO_WAIT;
+	game->state.gst = HERO_UPDATE_POS;
 }
 
 void	system_game_end(t_game *game)
@@ -220,10 +239,18 @@ void	system_loop(t_game *game)
 		system_hero_wait_input(game, e);
 	else if (game->state.gst == HERO_MOVE)
 		system_hero_move(game, e);
-	else if (game->state.gst == EXIT_ENABLE)
+	else if (game->state.gst == HERO_UPDATE_POS)
+	{
+		system_hero_update_pos(game);
+		game->state.gst = HERO_WAIT;
+	}
+	else if (game->state.gst == EXIT_ENABLE)	
 		system_exit_enable(game);
 	else if (game->state.gst == GAME_END)
+	{
+		system_hero_update_pos(game);
 		system_game_end(game);
+	}
 }
 
 int32_t	context_load_asset(
@@ -235,22 +262,22 @@ int32_t	context_load_asset(
 
 	drawable = malloc(sizeof(t_drawable));
 	if (!drawable)
-		return (0);
+		return (system_invalid("failed to allocate memory for drawable"));
 	lst = ft_arraylist_get(ctx->drawables, type);
 	if (!lst)
-		return (0);
+		return (system_invalid("list of drawables wall null for some type"));
 	lst = ft_arraylist_add(lst, drawable);
 	if (!lst)
-		return (0);
+		return (system_invalid("list was null after adding drawable"));
 	texture = mlx_load_png(path);
 	if (!texture)
-		return (0);
+		return (system_invalid("texture was null after mlx_load_png"));
 	ctx->textures = ft_arraylist_add(ctx->textures, texture);
 	if (!ctx->textures)
-		return (0);
+		return (system_invalid("list of textures was null after adding"));
 	drawable->img = mlx_texture_to_image(mlx, texture);
 	if (!drawable->img)
-		return (0);
+		return (system_invalid("failed to create image from texture"));
 	return (1);
 }
 
@@ -264,10 +291,10 @@ int32_t	context_init_drawables_list(t_context *ctx)
 	{
 		lst = ft_arraylist_new(free);
 		if (!lst)
-			return (0);
+			return (system_invalid("failed to initialize list of drawables"));
 		ctx->drawables = ft_arraylist_add(ctx->drawables, lst);
 		if (!ctx->drawables)
-			return (0);
+			return (system_invalid("failed to add list to ctx->drawables"));
 		i++;
 	}
 	return (1);
@@ -280,7 +307,7 @@ int32_t	context_init(t_context *ctx, mlx_t *mlx)
 
 	i = 0;
 	if (!context_init_drawables_list(ctx))
-		return (0);
+		return (system_invalid("failed to init ctx drawables"));
 	while (1)
 	{
 		if (i == HERO)
@@ -297,7 +324,7 @@ int32_t	context_init(t_context *ctx, mlx_t *mlx)
 		else if (i > EXIT)
 			break ;
 		if (!is_ok)
-			return (0);
+			return (system_invalid("failed loading some asset"));
 		i++;
 	}
 	return (1);
@@ -328,7 +355,7 @@ int	entity_drawables_init(
 	size_t		i;
 	int			x;
 	int			y;
-	
+
 	i = 0;
 	while (i < ft_arraylist_len(drawables_ctx))
 	{
@@ -336,17 +363,17 @@ int	entity_drawables_init(
 				drawables_ctx, i);
 		drawable_copy = malloc(sizeof(t_drawable));
 		if (!drawable_copy)
-			return (0);
+			return (system_invalid("failed allocing memory for drawable_copy"));
 		entity->drawables = ft_arraylist_add(entity->drawables, drawable_copy);
 		if (!entity->drawables)
-			return (0);
+			return (system_invalid("entity->drawables list was null after add"));
 		drawable_copy->img = drawable_ctx->img;
 		x = entity->x * game->ctx.block_size + game->ctx.window_x_offset;
 		y = entity->y * game->ctx.block_size + game->ctx.window_y_offset;
 		drawable_copy->i = mlx_image_to_window(
 				game->mlx, drawable_copy->img, x, y);
 		if (drawable_copy->i < 0)
-			return (0);
+			return (system_invalid("mlx_image_to_window failed"));
 		drawable_copy->img->instances[drawable_copy->i].enabled = i == 0
 			&& entity->type != EXIT;
 		i++;
@@ -384,14 +411,14 @@ int	entity_hero_components_init(t_entity *entity)
 	entity->components = ft_arraylist_new(
 			(t_vfun1)entity_hero_components_destroy);
 	if (!entity->components)
-		return (0);
+		return (system_invalid("failed to create components list for hero"));
 	component = malloc(sizeof(t_component));
 	if (!component)
-		return (0);
+		return (system_invalid("failed to alloc component for hero"));
 	component->type = MOVEABLE;
 	moveable = malloc(sizeof(t_moveable));
 	if (!moveable)
-		return (0);
+		return (system_invalid("failed to alloc moveable for hero"));
 	component->cmp = moveable;
 	moveable->move = entity_hero_move;
 	entity->components = ft_arraylist_add(entity->components, component);
@@ -456,7 +483,6 @@ void	entity_exit_destroy(t_entity *entity)
 	free(entity);
 }
 
-
 t_entity	*map_remove_floor(t_entity *entity)
 {
 	if (entity->type == FLOOR)
@@ -477,7 +503,7 @@ int32_t	entities_init(t_game *game)
 			(void *(*)(size_t, size_t, void*, void*)) entity_new,
 		(void *) game,
 		(t_vfun1) ft_nop) > 0)
-		return (0);
+		return (system_invalid("failed to init entities"));
 	ft_arraylist_transform2d(
 		game->map.chart,
 		(void *(*)(void*)) map_remove_floor,
@@ -533,27 +559,27 @@ int32_t	map_init(t_map *map)
 
 	map->chart = ft_arraylist_new((free));
 	if (!map->chart)
-		return (0);
+		return (system_invalid("malloc fail\n"));
 	fd = open("./maps/m.ber", O_RDONLY);
 	if (fd < 0)
-		return (0);
+		return (system_invalid("file open fail\n"));
 	str = get_next_line(fd);
 	while (str)
 	{
 		map->chart = ft_arraylist_add(map->chart, str);
 		if (!map->chart)
-			return (0);
+			return (system_invalid("failed to add string to map->chart on init\n"));
 		str = get_next_line(fd);
 	}
 	if (!map->chart)
-		return (0);
+		return (system_invalid("failed to init map->chart"));
 	if (ft_arraylist_transform(map->chart, map_transform_string_line,
 			(t_vfun1) ft_arraylist_destroy) > 0)
-		return (0);
+		return (system_invalid("failed to transform map"));
 	return (1);
 }
 
-void	sytem_init_window_size(t_game *game)
+void	system_init_window_size(t_game *game)
 {	
 	game->ctx.block_size = 32;
 	game->ctx.window_width = game->ctx.block_size * map_width(&game->map);
@@ -576,6 +602,7 @@ void	sytem_init_window_size(t_game *game)
 
 int32_t	system_init(t_game *game)
 {
+	game->mlx = NULL;
 	game->state.collectables_count = 0;
 	game->ctx.drawables = ft_arraylist_new((t_vfun1) ft_arraylist_destroy);
 	game->ctx.textures = ft_arraylist_new((t_vfun1) mlx_delete_texture);
@@ -584,7 +611,7 @@ int32_t	system_init(t_game *game)
 			system_panic(game, MEMORY_ERROR, "No memory to init drawables"));
 	if (!map_init(&game->map))
 		return (system_panic(game, ERROR, "Failed to init map"));
-	sytem_init_window_size(game);
+	system_init_window_size(game);
 	game->mlx = mlx_init(game->ctx.window_width,
 						 game->ctx.window_height,
 						 "So Long", true);
