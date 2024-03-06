@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 06:58:58 by maurodri          #+#    #+#             */
-/*   Updated: 2024/02/29 20:40:31 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/03/05 21:27:42 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,14 @@ typedef enum s_game_state
 	GAME_END,
 }	t_game_state;
 
+typedef enum s_screen_overflow
+{
+	SCREEN_OVERFLOW_UP = 1,
+	SCREEN_OVERFLOW_RIGHT = 2,
+	SCREEN_OVERFLOW_DOWN = 4,
+	SCREEN_OVERFLOW_LEFT = 8
+}	t_screen_overflow;
+
 typedef struct s_state
 {
 	t_game_state	gst;
@@ -72,6 +80,8 @@ typedef struct s_context
 	int			window_width;
 	int			window_y_offset;
 	int			window_x_offset;
+	int			overflow_y_offset;
+	int			overflow_x_offset;
 }	t_context;
 
 typedef struct s_entity

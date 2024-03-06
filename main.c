@@ -1,3 +1,4 @@
+
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
@@ -6,7 +7,7 @@
 /*   By: maurodri <maurodri@student.42sp...>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 15:28:12 by maurodri          #+#    #+#             */
-/*   Updated: 2024/02/29 21:35:47 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/03/06 01:29:21 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,16 +114,16 @@ void	drawables_update_position(
 	{
 		dwble = ft_arraylist_get(drawables, i);
 		dwble->img->instances[dwble->i].x = (
-			x * ctx.block_size + ctx.window_x_offset);
+			x * ctx.block_size + ctx.window_x_offset + ctx.overflow_x_offset);
 		dwble->img->instances[dwble->i].y = (
-			y * ctx.block_size + ctx.window_y_offset);
+			y * ctx.block_size + ctx.window_y_offset + ctx.overflow_y_offset);
 		i++;
 	}
 }
 
-
 void	system_hero_update_pos(t_game *game)
 {
+	ft_printf("x: %d y: %d\n", game->map.hero->x, game->map.hero->y);
 	drawables_update_position(
 		game->map.hero->drawables,
 		game->map.hero->x,
@@ -224,26 +225,111 @@ void	system_game_end(t_game *game)
 	exit_drawable->img->instances[exit_drawable->i].enabled = is_enabled;
 }
 
+t_screen_overflow	system_hero_screen_overflown(t_game *game)
+{
+	t_drawable			*dwb;
+	mlx_instance_t		ist;
+	t_screen_overflow	over;
+
+	over = 0;
+	dwb = ft_arraylist_get(game->map.hero->drawables, 0);
+	ist = dwb->img->instances[0];
+	if (ist.x < 0)
+		over |= SCREEN_OVERFLOW_LEFT;
+	else if (ist.x + game->ctx.block_size > game->mlx->width)
+		over |= SCREEN_OVERFLOW_RIGHT;
+	if (ist.y < 0)
+		over |= SCREEN_OVERFLOW_UP;
+	else if (ist.y + game->ctx.block_size > game->mlx->height)
+		over |= SCREEN_OVERFLOW_DOWN;
+	return (over);
+}
+
+void map_update_entity_pos(t_entity *entity, t_drawable *dwb, t_game *game)
+{
+	if (!dwb)
+		return ;
+	dwb->img->instances[dwb->i].x = game->ctx.overflow_x_offset +
+		(game->ctx.block_size * entity->x) + game->ctx.window_x_offset;
+	dwb->img->instances[dwb->i].y = game->ctx.overflow_y_offset +
+		(game->ctx.block_size * entity->y) + game->ctx.window_y_offset;
+}
+
+void system_map_update_all_drawables_pos(t_game *game)
+{
+	size_t		chart_len;
+	size_t		row;
+	size_t		col;
+	t_arraylist map_row;
+	t_entity   *entity;
+	size_t		col_len;
+	size_t		drawables_len;
+	size_t		i;
+	
+	chart_len = ft_arraylist_len(game->map.chart);
+	row = 0;
+	while (row < chart_len)
+	{
+		map_row = ft_arraylist_get(game->map.chart, row);
+		col_len = ft_arraylist_len(map_row);
+		col = -1;
+		
+		while (++col < col_len)
+		{
+			entity = ft_arraylist_get(map_row, col);
+			
+			if (!entity || !entity->drawables)
+				continue ;
+			drawables_len = ft_arraylist_len(entity->drawables);
+			i = 0;
+			while (i < drawables_len)
+			{
+				ft_printf("row: %d, col: %d, i: %d\n", row, col, i);
+				map_update_entity_pos(
+					entity, ft_arraylist_get(entity->drawables, i), game);
+				i++;
+			}
+		}
+		row++;
+	}
+}
+
+void system_map_update_pos(t_screen_overflow over, t_game *game)
+{
+	if ((over & SCREEN_OVERFLOW_UP) == SCREEN_OVERFLOW_UP)
+		game->ctx.overflow_y_offset += game->mlx->height; 
+	else if ((over & SCREEN_OVERFLOW_DOWN) == SCREEN_OVERFLOW_DOWN)
+		game->ctx.overflow_y_offset -= game->mlx->height; 
+	else if ((over & SCREEN_OVERFLOW_LEFT) == SCREEN_OVERFLOW_LEFT)
+		game->ctx.overflow_x_offset += game->mlx->width; 
+	else if ((over & SCREEN_OVERFLOW_RIGHT) == SCREEN_OVERFLOW_RIGHT)
+		game->ctx.overflow_x_offset -= game->mlx->width;
+	system_map_update_all_drawables_pos(game);
+	game->state.gst = HERO_WAIT;
+}
+
 void	system_loop(t_game *game)
 {
-	t_entity	*e;
-
 	if (mlx_is_key_down(game->mlx, MLX_KEY_ESCAPE))
 	{
 		game->exit_status = OK;
 		mlx_close_window(game->mlx);
 	}
-	e = game->map.hero;
-	entity_hero_animate(e);
+	entity_hero_animate(game->map.hero);
 	if (game->state.gst == HERO_WAIT)
-		system_hero_wait_input(game, e);
+		system_hero_wait_input(game, game->map.hero);
 	else if (game->state.gst == HERO_MOVE)
-		system_hero_move(game, e);
+		system_hero_move(game, game->map.hero);
 	else if (game->state.gst == HERO_UPDATE_POS)
 	{
 		system_hero_update_pos(game);
-		game->state.gst = HERO_WAIT;
+		if (system_hero_screen_overflown(game) > 0)
+			game->state.gst = MAP_UPDATE_POS;
+		else 
+			game->state.gst = HERO_WAIT;
 	}
+	else if (game->state.gst == MAP_UPDATE_POS)
+		system_map_update_pos(system_hero_screen_overflown(game), game);
 	else if (game->state.gst == EXIT_ENABLE)	
 		system_exit_enable(game);
 	else if (game->state.gst == GAME_END)
@@ -306,6 +392,8 @@ int32_t	context_init(t_context *ctx, mlx_t *mlx)
 	int32_t	is_ok;
 
 	i = 0;
+	ctx->overflow_x_offset = 0;
+	ctx->overflow_y_offset = 0;
 	if (!context_init_drawables_list(ctx))
 		return (system_invalid("failed to init ctx drawables"));
 	while (1)
@@ -560,7 +648,7 @@ int32_t	map_init(t_map *map)
 	map->chart = ft_arraylist_new((free));
 	if (!map->chart)
 		return (system_invalid("malloc fail\n"));
-	fd = open("./maps/m.ber", O_RDONLY);
+	fd = open("./maps/mauricio.ber", O_RDONLY);
 	if (fd < 0)
 		return (system_invalid("file open fail\n"));
 	str = get_next_line(fd);
