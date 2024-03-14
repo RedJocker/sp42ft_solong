@@ -6,19 +6,26 @@
 #    By: maurodri <maurodri@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/05 06:51:38 by maurodri          #+#    #+#              #
-#    Updated: 2024/02/08 03:47:04 by maurodri         ###   ########.fr        #
+#    Updated: 2024/03/13 23:43:18 by maurodri         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
-
-# cc main.c ... libmlx42.a -Iinclude -ldl -lglfw -pthread -lm
-
-NAME := ft_so_long
+NAME := so_long
 LIBMLX_DIR := ./lib/MLX42
 LIBMLX := $(LIBMLX_DIR)/build/libmlx42.a
 LIBFT_DIR := ./lib/libftx
 LIBFT := $(LIBFT_DIR)/libft.a
-SRCS := main.c
+SRCS := main.c \
+		context.c \
+		entity.c \
+		entity_hero.c \
+		entity_init.c \
+		map.c \
+		map_entity.c \
+		map_hero.c \
+		map_validate.c  \
+		map_validate_path.c  \
+		system.c
 OBJ_DIR := ./obj/
 OBJS := $(addprefix $(OBJ_DIR), $(patsubst %.c, %.o, $(SRCS)))
 DEP_FLAGS := -MP -MD

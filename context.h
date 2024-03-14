@@ -1,28 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_chomp.c                                         :+:      :+:    :+:   */
+/*   context.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: maurodri <maurodri@student.42sp...>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/07 19:48:45 by maurodri          #+#    #+#             */
-/*   Updated: 2024/03/12 21:33:11 by maurodri         ###   ########.fr       */
+/*   Created: 2024/03/12 20:44:42 by maurodri          #+#    #+#             */
+/*   Updated: 2024/03/13 00:01:23 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-char	*ft_chomp(char *str)
-{
-	char	*ptr;
+#ifndef CONTEXT_H
+# define CONTEXT_H
 
-	if (!str)
-		return (str);
-	ptr = str;
-	while (*ptr)
-		ptr++;
-	if (ptr == str)
-		return (str);
-	ptr--;
-	if (*ptr == '\n')
-		*ptr = '\0';
-	return (str);
-}
+# include "so_long.h"
+
+int32_t	context_init(t_context *ctx, mlx_t *mlx);
+
+#endif 

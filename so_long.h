@@ -1,17 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   scratch.h                                          :+:      :+:    :+:   */
+/*   so_long.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maurodri <maurodri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maurodri <maurodri@student.42sp...>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/05 06:58:58 by maurodri          #+#    #+#             */
-/*   Updated: 2024/03/05 21:27:42 by maurodri         ###   ########.fr       */
+/*   Created: 2024/03/12 21:00:35 by maurodri          #+#    #+#             */
+/*   Updated: 2024/03/12 21:55:26 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef SCRATCH_H
-# define SCRATCH_H
+#ifndef SO_LONG_H
+# define SO_LONG_H
+
 # include "collection/ft_arraylist.h"
 # include <MLX42/MLX42.h>
 

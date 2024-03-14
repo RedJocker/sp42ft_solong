@@ -6,10 +6,9 @@
 /*   By: maurodri <maurodri@student.42sp...>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 19:24:51 by maurodri          #+#    #+#             */
-/*   Updated: 2024/02/11 19:27:18 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/03/12 22:27:02 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include "ft_arraylist_internal.h"
 

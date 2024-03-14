@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/27 17:52:00 by maurodri          #+#    #+#             */
-/*   Updated: 2024/02/19 20:55:44 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/03/12 22:23:36 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,10 @@ void		*ft_arraylist_get(t_arraylist alst, size_t at);
 t_arraylist	ft_arraylist_add(t_arraylist alst, void *element);
 t_arraylist	ft_arraylist_addat(t_arraylist alst, void *element, size_t at);
 void		ft_arraylist_replace(t_arraylist alst, void *element, size_t at);
-void 		ft_arraylist_replace2d(
+void		ft_arraylist_replace2d(
 				t_arraylist alst, void *element, size_t row, size_t col);
 void		ft_arraylist_switch(t_arraylist alst, void *element, size_t at);
-void 		ft_arraylist_switch2d(
+void		ft_arraylist_switch2d(
 				t_arraylist alst, void *element, size_t row, size_t col);
 void		ft_arraylist_swap(t_arraylist alst, size_t at1, size_t at2);
 void		ft_arraylist_swap2d(t_arraylist alst, size_t at1[2], size_t at2[2]);
