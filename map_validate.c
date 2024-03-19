@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42sp...>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 23:26:17 by maurodri          #+#    #+#             */
-/*   Updated: 2024/03/14 04:28:25 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/03/18 20:40:07 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,11 +86,11 @@ int32_t	map_validate_wall_col(t_map *map)
 int32_t	map_validate_entities_count(char *char_map)
 {
 	if (char_map['P'] != 1)
-		return (system_invalid("Invalid count of P on map"));
+		return (system_quit_invalid("Invalid count of P on map"));
 	else if (char_map['E'] != 1)
-		return (system_invalid("Invalid count of E on map"));
+		return (system_quit_invalid("Invalid count of E on map"));
 	else if (char_map['C'] < 1)
-		return (system_invalid("Invalid count of C on map"));
+		return (system_quit_invalid("Invalid count of C on map"));
 	return (1);
 }
 
@@ -110,8 +110,8 @@ int32_t	map_validate_entities(t_map *map, char char_histogram[256], int pos[2])
 		i[1] = -1;
 		while (row[++i[1]])
 		{
-			if (!ft_strchr("10EPC", *row))
-				return (system_invalid("Invalid character on map"));
+			if (!ft_strchr("10EPC", row[i[1]]))
+				return (system_quit_invalid("Invalid character on map"));
 			char_histogram[(int) row[i[1]]]++;
 			if (row[i[1]] == 'P')
 			{

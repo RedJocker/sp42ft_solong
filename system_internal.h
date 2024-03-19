@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42sp...>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 22:46:40 by maurodri          #+#    #+#             */
-/*   Updated: 2024/03/12 22:47:31 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/03/18 22:14:35 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 # include "so_long.h"
 
-int32_t				system_panic(
+int32_t				system_quit_panic(
 						t_game *game, t_exit_status exit_code, char *msg);
 void				system_quit_ok(void *param);
 void				system_hero_move(t_game *game, t_entity *hero);

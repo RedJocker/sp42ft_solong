@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42sp...>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 00:05:53 by maurodri          #+#    #+#             */
-/*   Updated: 2024/03/14 04:26:55 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/03/18 22:26:24 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,14 +44,15 @@ int	entity_hero_init_components(t_entity *entity)
 	entity->components = ft_arraylist_new(
 			(t_vfun1)entity_hero_components_destroy);
 	if (!entity->components)
-		return (system_invalid("Failed to create components list for hero"));
+		return (system_quit_invalid("Failed to create "
+				"components list for hero"));
 	component = malloc(sizeof(t_component));
 	if (!component)
-		return (system_invalid("Failed to alloc component for hero"));
+		return (system_quit_invalid("Failed to alloc component for hero"));
 	component->type = MOVEABLE;
 	moveable = malloc(sizeof(t_moveable));
 	if (!moveable)
-		return (system_invalid("Failed to alloc moveable for hero"));
+		return (system_quit_invalid("Failed to alloc moveable for hero"));
 	component->cmp = moveable;
 	moveable->move = entity_hero_move;
 	entity->components = ft_arraylist_add(entity->components, component);

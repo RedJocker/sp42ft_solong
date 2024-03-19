@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42sp...>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 20:44:03 by maurodri          #+#    #+#             */
-/*   Updated: 2024/03/14 04:20:30 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/03/18 22:07:47 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,22 +23,22 @@ static int32_t	context_load_asset(
 
 	drawable = malloc(sizeof(t_drawable));
 	if (!drawable)
-		return (system_invalid("Failed to allocate memory for drawable"));
+		return (system_quit_invalid("No memory for drawable"));
 	lst = ft_arraylist_get(ctx->drawables, type);
 	if (!lst)
-		return (system_invalid("List of drawables wall null for some type"));
+		return (system_quit_invalid("List of drawables was null"));
 	lst = ft_arraylist_add(lst, drawable);
 	if (!lst)
-		return (system_invalid("List was null after adding drawable"));
+		return (system_quit_invalid("List was null after adding drawable"));
 	texture = mlx_load_png(path);
 	if (!texture)
-		return (system_invalid("Texture was null after mlx_load_png"));
+		return (system_quit_invalid("Texture was null after mlx_load_png"));
 	ctx->textures = ft_arraylist_add(ctx->textures, texture);
 	if (!ctx->textures)
-		return (system_invalid("List of textures was null after adding"));
+		return (system_quit_invalid("List of textures was null after add"));
 	drawable->img = mlx_texture_to_image(mlx, texture);
 	if (!drawable->img)
-		return (system_invalid("Failed to create image from texture"));
+		return (system_quit_invalid("Failed to create image from texture"));
 	return (1);
 }
 
@@ -52,10 +52,10 @@ static int32_t	context_init_drawables_list(t_context *ctx)
 	{
 		lst = ft_arraylist_new(free);
 		if (!lst)
-			return (system_invalid("Failed to initialize list of drawables"));
+			return (system_quit_invalid("Failed to init list of drawables"));
 		ctx->drawables = ft_arraylist_add(ctx->drawables, lst);
 		if (!ctx->drawables)
-			return (system_invalid("Failed to add list to ctx->drawables"));
+			return (system_quit_invalid("Failed add list to ctx->drawables"));
 		i++;
 	}
 	return (1);
@@ -98,7 +98,7 @@ int32_t	context_init(t_context *ctx, mlx_t *mlx)
 	ctx->overflow_x_offset = 0;
 	ctx->overflow_y_offset = 0;
 	if (!context_init_drawables_list(ctx))
-		return (system_invalid("Failed to init ctx drawables"));
+		return (system_quit_invalid("Failed to init ctx drawables"));
 	i = -1;
 	while (++i <= EXIT)
 	{
@@ -111,7 +111,7 @@ int32_t	context_init(t_context *ctx, mlx_t *mlx)
 		else if (i == EXIT)
 			is_ok = context_load_asset(ctx, "./assets/exit.png", mlx, EXIT);
 		if (!is_ok)
-			return (system_invalid("failed loading some asset"));
+			return (system_quit_invalid("failed loading some asset"));
 	}
 	return (1);
 }

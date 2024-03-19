@@ -6,7 +6,7 @@
 #    By: maurodri <maurodri@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/05 06:51:38 by maurodri          #+#    #+#              #
-#    Updated: 2024/03/13 23:43:18 by maurodri         ###   ########.fr        #
+#    Updated: 2024/03/20 03:18:28 by maurodri         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -25,7 +25,12 @@ SRCS := main.c \
 		map_hero.c \
 		map_validate.c  \
 		map_validate_path.c  \
-		system.c
+		system.c \
+		system_hero.c \
+		system_quit.c \
+		system_map.c \
+		system_loop.c
+
 OBJ_DIR := ./obj/
 OBJS := $(addprefix $(OBJ_DIR), $(patsubst %.c, %.o, $(SRCS)))
 DEP_FLAGS := -MP -MD
@@ -55,7 +60,7 @@ $(LIBMLX):
 $(LIBFT):
 	$(MAKE) -C $(LIBFT_DIR)  #--no-print-directory
 
-.PHONY: all clean fclean re bonus
+.PHONY: all clean fclean re bonus nur_%
 
 clean:
 	rm -fr $(OBJ_DIR) **/*~ *~ **/.#*
@@ -66,5 +71,18 @@ fclean: clean
 	rm -f $(NAME)
 
 re: fclean all
+
+run_invalid: $(NAME)
+	for map in $$(ls ./maps/invalid/*.ber); do \
+		echo "file: $$map"; \
+		./so_long $$map; \
+	done
+
+run: $(NAME)
+	for map in $$(ls ./maps/*.ber); do \
+		echo "file: $$map"; \
+		./so_long $$map; \
+	done
+
 
 -include $(DEP_FILES)
