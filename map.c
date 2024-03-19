@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42sp...>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 20:20:57 by maurodri          #+#    #+#             */
-/*   Updated: 2024/03/14 01:05:45 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/03/18 22:03:17 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,15 +66,15 @@ int32_t	map_is_valid(t_map *map)
 	hero_pos[0] = -1;
 	hero_pos[1] = -1;
 	if (!map_validate_retangular_shape(map))
-		return (system_invalid("Invalid map, should be retangular"));
+		return (system_quit_invalid("Invalid map, should be retangular"));
 	else if (!map_validate_wall_row(map))
-		return (system_invalid("Invalid row for map"));
+		return (system_quit_invalid("Invalid row for map"));
 	else if (!map_validate_wall_col(map))
-		return (system_invalid("Invalid col for map"));
+		return (system_quit_invalid("Invalid col for map"));
 	else if (!map_validate_entities(map, char_histogram, hero_pos))
 		return (0);
 	else if (!map_validate_path(map, char_histogram, hero_pos))
-		return (system_invalid("Invalid map, no path to solve"));
+		return (system_quit_invalid("Invalid map, no path to solve"));
 	return (1);
 }
 
@@ -85,24 +85,24 @@ int32_t	map_init(t_map *map, char *path)
 
 	map->chart = ft_arraylist_new((free));
 	if (!map->chart)
-		return (system_invalid("Malloc fail\n"));
+		return (system_quit_invalid("Malloc fail\n"));
 	fd = open(path, O_RDONLY);
 	if (fd < 0)
-		return (system_invalid("File open fail\n"));
+		return (system_quit_invalid("File open fail\n"));
 	str = ft_chomp(get_next_line(fd));
 	while (str)
 	{
 		map->chart = ft_arraylist_add(map->chart, str);
 		if (!map->chart)
-			return (system_invalid("Failed to add str to map->chart on init\n"));
+			return (system_quit_invalid("Failed to add to map->chart\n"));
 		str = ft_chomp(get_next_line(fd));
 	}
 	if (!map->chart)
-		return (system_invalid("Failed to init map->chart"));
+		return (system_quit_invalid("Failed to init map->chart"));
 	if (!map_is_valid(map))
 		return (0);
 	if (ft_arraylist_transform(map->chart, map_transform_string_line,
 			(t_vfun1) ft_arraylist_destroy) > 0)
-		return (system_invalid("Failed to transform map"));
+		return (system_quit_invalid("Failed to transform map"));
 	return (1);
 }

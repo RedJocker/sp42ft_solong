@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42sp...>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 15:28:12 by maurodri          #+#    #+#             */
-/*   Updated: 2024/03/14 04:20:47 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/03/18 22:08:33 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,10 @@ static int32_t	is_valid_map_filename(char *filename)
 	while (*p)
 		p++;
 	if (p == filename)
-		return (system_invalid("Empty filename"));
+		return (system_quit_invalid("Empty filename"));
 	p -= 4;
 	if (p < filename || ft_strncmp(p, ".ber", 4) != 0)
-		return (system_invalid("Invalid extension for map file"));
+		return (system_quit_invalid("Invalid extension for map file"));
 	return (1);
 }
 
@@ -36,7 +36,8 @@ int32_t	main(int args_len, char *args[])
 
 	if (args_len != 2)
 	{
-		system_invalid("Invalid command. Usage example: so_long some_map.ber");
+		system_quit_invalid("Invalid command."
+			" Usage example: so_long some_map.ber");
 		return (1);
 	}
 	else if (!is_valid_map_filename(args[1]))
