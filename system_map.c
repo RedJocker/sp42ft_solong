@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42sp...>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 22:10:38 by maurodri          #+#    #+#             */
-/*   Updated: 2024/03/18 22:25:24 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/03/25 21:42:44 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,13 +46,13 @@ void	system_map_update_all_drawables_pos(t_game *game)
 void	system_map_update_pos(t_screen_overflow over, t_game *game)
 {
 	if ((over & SCREEN_OVERFLOW_UP) == SCREEN_OVERFLOW_UP)
-		game->ctx.overflow_y_offset += game->mlx->height;
+		game->ctx.overflow_y_offset += game->ctx.window_height;
 	else if ((over & SCREEN_OVERFLOW_DOWN) == SCREEN_OVERFLOW_DOWN)
-		game->ctx.overflow_y_offset -= game->mlx->height;
+		game->ctx.overflow_y_offset -= game->ctx.window_height;
 	else if ((over & SCREEN_OVERFLOW_LEFT) == SCREEN_OVERFLOW_LEFT)
-		game->ctx.overflow_x_offset += game->mlx->width;
+		game->ctx.overflow_x_offset += game->ctx.window_width;
 	else if ((over & SCREEN_OVERFLOW_RIGHT) == SCREEN_OVERFLOW_RIGHT)
-		game->ctx.overflow_x_offset -= game->mlx->width;
+		game->ctx.overflow_x_offset -= game->ctx.window_width;
 	system_map_update_all_drawables_pos(game);
 	game->state.gst = HERO_WAIT;
 }

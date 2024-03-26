@@ -6,7 +6,7 @@
 #    By: maurodri <maurodri@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/05 06:51:38 by maurodri          #+#    #+#              #
-#    Updated: 2024/03/18 22:23:05 by maurodri         ###   ########.fr        #
+#    Updated: 2024/03/25 19:43:37 by maurodri         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -72,13 +72,13 @@ fclean: clean
 
 re: fclean all
 
-run_invalid:
+run_invalid: $(NAME)
 	for map in $$(ls ./maps/invalid/*.ber); do \
 		echo "file: $$map"; \
 		./so_long $$map; \
 	done
 
-run:
+run: $(NAME)
 	for map in $$(ls ./maps/*.ber); do \
 		echo "file: $$map"; \
 		./so_long $$map; \
