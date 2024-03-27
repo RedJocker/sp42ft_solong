@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42sp...>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 20:20:57 by maurodri          #+#    #+#             */
-/*   Updated: 2024/03/18 22:03:17 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/03/26 21:30:52 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #include "entity.h"
 #include "ft_string.h"
 #include "get_next_line.h"
+#include "ft_stdio.h"
 
 static void	*map_transform_string_line(void *s)
 {
@@ -81,12 +82,14 @@ int32_t	map_is_valid(t_map *map)
 int32_t	map_init(t_map *map, char *path)
 {
 	int		fd;
-	char	*str;
+	char   *str;
+	int 	line = 0;
 
 	map->chart = ft_arraylist_new((free));
 	if (!map->chart)
 		return (system_quit_invalid("Malloc fail\n"));
 	fd = open(path, O_RDONLY);
+	ft_printf("file_open\n");
 	if (fd < 0)
 		return (system_quit_invalid("File open fail\n"));
 	str = ft_chomp(get_next_line(fd));
