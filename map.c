@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42sp...>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 20:20:57 by maurodri          #+#    #+#             */
-/*   Updated: 2024/03/26 21:30:52 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/03/27 21:45:50 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,12 +66,13 @@ int32_t	map_is_valid(t_map *map)
 
 	hero_pos[0] = -1;
 	hero_pos[1] = -1;
+
 	if (!map_validate_retangular_shape(map))
 		return (system_quit_invalid("Invalid map, should be retangular"));
 	else if (!map_validate_wall_row(map))
-		return (system_quit_invalid("Invalid row for map"));
+		return (0);
 	else if (!map_validate_wall_col(map))
-		return (system_quit_invalid("Invalid col for map"));
+		return (0);
 	else if (!map_validate_entities(map, char_histogram, hero_pos))
 		return (0);
 	else if (!map_validate_path(map, char_histogram, hero_pos))

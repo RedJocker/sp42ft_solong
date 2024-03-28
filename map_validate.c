@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42sp...>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 23:26:17 by maurodri          #+#    #+#             */
-/*   Updated: 2024/03/18 20:40:07 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/03/27 21:45:37 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,22 +41,20 @@ int32_t	map_validate_wall_row(t_map *map)
 {
 	size_t		height;
 	char		*row;
-
+	int			i_col;
 	row = ft_arraylist_get(map->chart, 0);
-	while (*row)
-	{
-		if (*row != '1')
-			return (0);
-		row++;
-	}
+	i_col = -1;
+	while (row[++i_col])
+		if (row[i_col] != '1')
+			return (system_quit_invalid("Invalid first row for map"));
 	height = map_height(map);
 	row = ft_arraylist_get(map->chart, height - 1);
-	while (*row)
-	{
-		if (*row != '1')
-			return (0);
-		row++;
-	}
+	i_col = -1;
+	while (row[++i_col])
+		if (row[i_col] != '1')
+			return ((system_quit_invalid("Invalid last row for map")));
+	if (i_col > 500)
+		return ((system_quit_invalid("Invalid width for map, max 500")));
 	return (1);
 }
 
@@ -69,15 +67,17 @@ int32_t	map_validate_wall_col(t_map *map)
 
 	row = ft_arraylist_get(map->chart, 0);
 	height = map_height(map);
+	if (height > 500)
+		return (system_quit_invalid("Invalid height for map, max 500"));
 	width = ft_strlen(row);
 	i = 0;
 	while (i < height)
 	{
 		row = ft_arraylist_get(map->chart, i);
 		if (*row != '1')
-			return (0);
+			return (system_quit_invalid("Invalid col for map"));
 		if (*(row + width - 1) != '1')
-			return (0);
+			return (system_quit_invalid("Invalid col for map"));
 		i++;
 	}
 	return (1);

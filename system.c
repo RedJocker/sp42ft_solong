@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42sp...>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 18:59:37 by maurodri          #+#    #+#             */
-/*   Updated: 2024/03/26 21:30:51 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/03/27 23:19:01 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,33 +118,26 @@ void	system_resizefunc(int32_t width, int32_t height, t_game *game)
 
 int32_t	system_init(t_game *game, char *map_path)
 {
-	ft_printf("bzero\n");
+	
 	ft_bzero(game, sizeof(t_game));
-	ft_printf("drawables and textures lst\n");
 	game->ctx.drawables = ft_arraylist_new((t_vfun1) ft_arraylist_destroy);
 	game->ctx.textures = ft_arraylist_new((t_vfun1) mlx_delete_texture);
 	if (!game->ctx.drawables || !game->ctx.textures)
 		return (
 			system_quit_panic(game, MEMORY_ERROR, "No memory for drawables"));
-	ft_printf("map_init\n");
 	if (!map_init(&game->map, map_path))
 		return (system_quit_panic(game, ERROR, "Failed to init map"));
-	ft_printf("window_size\n");
 	system_init_window_size(game);
-	ft_printf("mlx_init\n");
 	game->mlx = mlx_init(game->ctx.window_width,
 			game->ctx.window_height,
 			"So Long", true);
-	ft_printf("ctx_init\n");
 	if (!game->mlx)
 		return (system_quit_panic(game, MLX_ERROR, NULL));
 	if (!context_init(&game->ctx, game->mlx))
 		return (system_quit_panic(game, ERROR, "Failed to init assets"));
-	ft_printf("system_entities_init\n");
 	if (!system_entities_init(game))
 		return (system_quit_panic(game, ERROR, "Failed to init entities"));
 	mlx_set_window_limit(game->mlx, game->ctx.block_size * 4, game->ctx.block_size * 4, -1, -1);
-	ft_printf("loop_hook_init\n");
 	mlx_loop_hook(game->mlx, (t_vfun1) system_loop, game);
 	mlx_close_hook(game->mlx, system_quit_ok, game);
 	mlx_resize_hook(game->mlx, (mlx_resizefunc) system_resizefunc, game);
