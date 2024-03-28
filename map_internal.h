@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42sp...>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 22:54:22 by maurodri          #+#    #+#             */
-/*   Updated: 2024/03/14 04:19:59 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/03/28 20:07:18 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 # define MAP_INTERNAL_H
 
 # include "so_long.h"
+
+# define MAX_MAP_SIZE 500
 
 int32_t		map_validate_retangular_shape(t_map *map);
 int32_t		map_validate_wall_row(t_map *map);

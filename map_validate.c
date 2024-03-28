@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42sp...>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 23:26:17 by maurodri          #+#    #+#             */
-/*   Updated: 2024/03/27 23:41:13 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/03/28 20:38:15 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,6 @@ int32_t	map_validate_wall_row(t_map *map)
 	while (row[++i_col])
 		if (row[i_col] != '1')
 			return ((system_quit_invalid("Invalid last row for map")));
-	if (i_col > 500)
-		return ((system_quit_invalid("Invalid width for map, max 500")));
 	return (1);
 }
 
@@ -66,9 +64,7 @@ int32_t	map_validate_wall_col(t_map *map)
 	char		*row;
 
 	row = ft_arraylist_get(map->chart, 0);
-	height = map_height(map);
-	if (height > 500)
-		return (system_quit_invalid("Invalid height for map, max 500"));
+	height = map_height(map); 
 	width = ft_strlen(row);
 	i = 0;
 	while (i < height)

@@ -6,7 +6,7 @@
 #    By: maurodri <maurodri@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/05 06:51:38 by maurodri          #+#    #+#              #
-#    Updated: 2024/03/27 23:39:44 by maurodri         ###   ########.fr        #
+#    Updated: 2024/03/28 20:58:03 by maurodri         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -23,6 +23,7 @@ SRCS := main.c \
 		map.c \
 		map_entity.c \
 		map_hero.c \
+		map_init.c \
 		map_validate.c  \
 		map_validate_path.c  \
 		system.c \
