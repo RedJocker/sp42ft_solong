@@ -6,20 +6,17 @@
 /*   By: maurodri <maurodri@student.42sp...>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 18:59:37 by maurodri          #+#    #+#             */
-/*   Updated: 2024/03/27 23:19:01 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/03/27 23:42:23 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "system.h"
-#include "MLX42/MLX42.h"
-#include "so_long.h"
 #include "system_internal.h"
 #include "ft_memlib.h"
 #include "entity.h"
 #include "context.h"
 #include "ft_util.h"
 #include "map.h"
-#include "ft_stdio.h"
 
 int32_t	system_entities_init(t_game *game)
 {
