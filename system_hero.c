@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42sp...>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 20:14:03 by maurodri          #+#    #+#             */
-/*   Updated: 2024/03/27 23:42:43 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/03/28 21:30:20 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,13 +52,13 @@ t_screen_overflow	system_hero_screen_overflown(t_game *game)
 	dwb = ft_arraylist_get(game->map.hero->drawables, 0);
 	ist = dwb->img->instances[0];
 	half_block = game->ctx.block_size / 2;
-	if (ist.x + half_block < 0)
+	if (ist.x + half_block < 0 + game->ctx.block_size)
 		over |= SCREEN_OVERFLOW_LEFT;
-	else if (ist.x + half_block > game->mlx->width)
+	else if (ist.x + half_block > game->ctx.window_width - game->ctx.block_size)
 		over |= SCREEN_OVERFLOW_RIGHT;
-	if (ist.y + half_block < 0)
+	if (ist.y + half_block < 0 + game->ctx.block_size)
 		over |= SCREEN_OVERFLOW_UP;
-	else if (ist.y + half_block > game->mlx->height)
+	else if (ist.y + half_block > game->ctx.window_height - game->ctx.block_size)
 		over |= SCREEN_OVERFLOW_DOWN;
 	return (over);
 }

@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42sp...>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 23:26:17 by maurodri          #+#    #+#             */
-/*   Updated: 2024/03/28 20:38:15 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/03/28 21:14:23 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ int32_t	map_validate_wall_row(t_map *map)
 	size_t		height;
 	char		*row;
 	int			i_col;
+
 	row = ft_arraylist_get(map->chart, 0);
 	i_col = -1;
 	while (row[++i_col])
@@ -64,7 +65,7 @@ int32_t	map_validate_wall_col(t_map *map)
 	char		*row;
 
 	row = ft_arraylist_get(map->chart, 0);
-	height = map_height(map); 
+	height = map_height(map);
 	width = ft_strlen(row);
 	i = 0;
 	while (i < height)

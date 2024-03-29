@@ -6,11 +6,12 @@
 /*   By: maurodri <maurodri@student.42sp...>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 22:10:38 by maurodri          #+#    #+#             */
-/*   Updated: 2024/03/27 23:43:45 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/03/28 23:48:37 by maurodri         ###   ########.fr       */
 /*   Updated: 2024/03/18 22:25:24 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "MLX42/MLX42.h"
 #include "system.h"
 #include "system_internal.h"
 #include "map.h"
@@ -46,14 +47,21 @@ void	system_map_update_all_drawables_pos(t_game *game)
 
 void	system_map_update_pos(t_screen_overflow over, t_game *game)
 {
+	int block_x2;
+	int height;
+	int width;
+	
+	block_x2 = 2 * game->ctx.block_size;
+	height = game->ctx.window_height;
+	width = game->ctx.window_width;
 	if ((over & SCREEN_OVERFLOW_UP) == SCREEN_OVERFLOW_UP)
-		game->ctx.overflow_y_offset += game->ctx.window_height;
+		game->ctx.overflow_y_offset += height - block_x2;
 	else if ((over & SCREEN_OVERFLOW_DOWN) == SCREEN_OVERFLOW_DOWN)
-		game->ctx.overflow_y_offset -= game->ctx.window_height;
+		game->ctx.overflow_y_offset -= height - block_x2;
 	else if ((over & SCREEN_OVERFLOW_LEFT) == SCREEN_OVERFLOW_LEFT)
-		game->ctx.overflow_x_offset += game->ctx.window_width;
+		game->ctx.overflow_x_offset += width - block_x2;
 	else if ((over & SCREEN_OVERFLOW_RIGHT) == SCREEN_OVERFLOW_RIGHT)
-		game->ctx.overflow_x_offset -= game->ctx.window_width;
+		game->ctx.overflow_x_offset -= width - block_x2;
 	system_map_update_all_drawables_pos(game);
 	game->state.gst = HERO_WAIT;
 }
@@ -61,14 +69,19 @@ void	system_map_update_pos(t_screen_overflow over, t_game *game)
 void	system_exit_enable(t_game *game)
 {
 	t_entity	*exit;
-	t_drawable	*drawable;
+	t_drawable	*exit_dwb;
+	t_drawable	*hero_dwb;
 
 	system_hero_update_drawables_pos(game);
 	exit = game->map.exit;
 	ft_arraylist_switch2d(game->map.chart, exit, exit->y, exit->x);
-	drawable = ft_arraylist_get(exit->drawables, 0);
-	drawable->img->instances[drawable->i].enabled = 1;
-	map_entity_update_pos(exit, drawable, game);
+	exit_dwb = ft_arraylist_get(exit->drawables, 0);
+	exit_dwb->img->instances[exit_dwb->i].enabled = 1;
+	map_entity_update_pos(exit, exit_dwb, game);
+	hero_dwb = ft_arraylist_get(
+		game->map.hero->drawables, ft_arraylist_len(game->map.hero->drawables) - 1);
+	mlx_set_instance_depth(&exit_dwb->img->instances[exit_dwb->i], 
+						   hero_dwb->img->instances[hero_dwb->i].z + 1);
 	game->state.gst = HERO_UPDATE_POS;
 }
 
@@ -92,4 +105,24 @@ void	system_update_drawables_pos(
 				+ ctx.window_y_offset + ctx.overflow_y_offset);
 		i++;
 	}
+}
+
+void	system_map_center(t_game *game, int width, int height)
+{
+	if (game->ctx.window_width < width)
+	{
+		game->ctx.window_x_offset = (width - game->ctx.window_width) / 2;
+		game->ctx.overflow_x_offset = 0;
+	}
+	else
+		game->ctx.window_x_offset = 0;
+	if (game->ctx.window_height < height)
+	{
+		game->ctx.window_y_offset = (height - game->ctx.window_height) / 2;
+		game->ctx.overflow_y_offset = 0;
+	}
+	else
+		game->ctx.window_y_offset = 0;
+	game->ctx.window_width = width;
+	game->ctx.window_height = height;
 }
