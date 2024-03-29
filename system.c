@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42sp...>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 18:59:37 by maurodri          #+#    #+#             */
-/*   Updated: 2024/03/28 23:34:41 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/03/28 23:56:25 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,20 +67,22 @@ void	system_resizefunc(int32_t width, int32_t height, t_game *game)
 {
 	t_game_state		state;
 	t_screen_overflow	over;
-	int					hero_pos[2];
+	int					h_pos[2];
 
 	game->ctx.window_width = game->ctx.block_size * map_width(&game->map);
 	game->ctx.window_height = game->ctx.block_size * map_height(&game->map);
 	system_map_center(game, width, height);
 	over = system_hero_screen_overflown(game);
-	hero_pos[0] = (game->map.hero->y * game->ctx.block_size)
-			+ game->ctx.overflow_y_offset + game->ctx.window_y_offset;
-	hero_pos[1] = (game->map.hero->x * game->ctx.block_size)
-			+ game->ctx.overflow_x_offset + game->ctx.window_x_offset;
+	h_pos[0] = (game->map.hero->y * game->ctx.block_size)
+		+ game->ctx.overflow_y_offset + game->ctx.window_y_offset;
+	h_pos[1] = (game->map.hero->x * game->ctx.block_size)
+		+ game->ctx.overflow_x_offset + game->ctx.window_x_offset;
 	if ((over & SCREEN_OVERFLOW_DOWN) == SCREEN_OVERFLOW_DOWN)
-		game->ctx.overflow_y_offset -= hero_pos[0] - height + 2 * (game->ctx.block_size);
+		game->ctx.overflow_y_offset -= (
+				h_pos[0] - height + 2 * (game->ctx.block_size));
 	if ((over & SCREEN_OVERFLOW_RIGHT) == SCREEN_OVERFLOW_RIGHT)
-		game->ctx.overflow_x_offset -= hero_pos[1] - width + 2 *(game->ctx.block_size);
+		game->ctx.overflow_x_offset -= (
+				h_pos[1] - width + 2 *(game->ctx.block_size));
 	system_map_update_all_drawables_pos(game);
 }
 
@@ -105,7 +107,7 @@ int32_t	system_init(t_game *game, char *map_path)
 	if (!system_init_entities(game))
 		return (system_quit_panic(game, ERROR, "Failed to init entities"));
 	mlx_set_window_limit(game->mlx, game->ctx.block_size * 4,
-						 game->ctx.block_size * 4, -1, -1);
+		game->ctx.block_size * 4, -1, -1);
 	mlx_loop_hook(game->mlx, (t_vfun1) system_loop, game);
 	mlx_close_hook(game->mlx, system_quit_ok, game);
 	mlx_resize_hook(game->mlx, (mlx_resizefunc) system_resizefunc, game);

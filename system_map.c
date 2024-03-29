@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42sp...>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 22:10:38 by maurodri          #+#    #+#             */
-/*   Updated: 2024/03/28 23:48:37 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/03/28 23:58:15 by maurodri         ###   ########.fr       */
 /*   Updated: 2024/03/18 22:25:24 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
@@ -47,10 +47,10 @@ void	system_map_update_all_drawables_pos(t_game *game)
 
 void	system_map_update_pos(t_screen_overflow over, t_game *game)
 {
-	int block_x2;
-	int height;
-	int width;
-	
+	int	block_x2;
+	int	height;
+	int	width;
+
 	block_x2 = 2 * game->ctx.block_size;
 	height = game->ctx.window_height;
 	width = game->ctx.window_width;
@@ -78,10 +78,10 @@ void	system_exit_enable(t_game *game)
 	exit_dwb = ft_arraylist_get(exit->drawables, 0);
 	exit_dwb->img->instances[exit_dwb->i].enabled = 1;
 	map_entity_update_pos(exit, exit_dwb, game);
-	hero_dwb = ft_arraylist_get(
-		game->map.hero->drawables, ft_arraylist_len(game->map.hero->drawables) - 1);
-	mlx_set_instance_depth(&exit_dwb->img->instances[exit_dwb->i], 
-						   hero_dwb->img->instances[hero_dwb->i].z + 1);
+	hero_dwb = ft_arraylist_get(game->map.hero->drawables,
+			ft_arraylist_len(game->map.hero->drawables) - 1);
+	mlx_set_instance_depth(&exit_dwb->img->instances[exit_dwb->i],
+		hero_dwb->img->instances[hero_dwb->i].z + 1);
 	game->state.gst = HERO_UPDATE_POS;
 }
 
