@@ -6,7 +6,7 @@
 #    By: maurodri <maurodri@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/05 06:51:38 by maurodri          #+#    #+#              #
-#    Updated: 2024/03/30 00:23:09 by maurodri         ###   ########.fr        #
+#    Updated: 2024/03/30 01:04:11 by maurodri         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -15,7 +15,7 @@ LIBMLX_DIR := ./lib/MLX42
 LIBMLX := $(LIBMLX_DIR)/build/libmlx42.a
 LIBFT_DIR := ./lib/libftx
 LIBFT := $(LIBFT_DIR)/libft.a
-SRCS := main.c \
+FILES := main.c \
 		context.c \
 		entity.c \
 		entity_hero.c \
@@ -32,21 +32,37 @@ SRCS := main.c \
 		system_map.c \
 		system_loop.c
 
+BONUS_FILES := main_bonus.c
 OBJ_DIR := ./obj/
-OBJS := $(addprefix $(OBJ_DIR), $(patsubst %.c, %.o, $(SRCS)))
+MANDATORY_OBJS := $(addprefix $(OBJ_DIR), $(patsubst %.c, %.o, $(FILES)))
+BONUS_OBJS := $(addprefix $(OBJ_DIR), $(patsubst %.c, %.o, $(BONUS_FILES)))
 DEP_FLAGS := -MP -MD
-DEP_FILES := $(patsubst %.o, %.d, $(OBJS))
 INCLUDES := -I./ -I$(LIBMLX_DIR)/include -I$(LIBFT_DIR)/includes
-VPATH := ./ ./mandatory
+VPATH := ./ ./mandatory ./bonus
 CFLAGS := -g3 -fsanitize=address -fsanitize=undefined -Wall -Wextra #-Werror 
 LFLAGS := -ldl -lglfw -pthread -lm
 CC := cc
 
+ifdef WITH_BONUS
+	INCLUDES := -I./bonus -I$(LIBMLX_DIR)/include -I$(LIBFT_DIR)/includes
+	CLEAR := $(MANDATORY_OBJS) $(patsubst %.o, %.d, $(MANDATORY_OBJS))
+	OBJS := $(BONUS_OBJS)
+	ETAGS_BASE := ./bonus
+	DEP_FILES := $(patsubst %.o, %.d, $(OBJS))
+else
+	INCLUDES := -I./mandatory -I$(LIBMLX_DIR)/include -I$(LIBFT_DIR)/includes
+	CLEAR := $(BONUS_OBJS) $(patsubst %.o, %.d, $(BONUS_OBJS))
+	OBJS := $(MANDATORY_OBJS)
+	ETAGS_BASE := ./mandatory
+endif
+
+
 all: $(NAME)
 
 $(NAME): $(OBJS) $(LIBMLX) $(LIBFT)
+	rm -f $(CLEAR)
 	$(CC) $(CFLAGS) $^ $(INCLUDES) $(LFLAGS) -o $@
-	etags $$(find . -name '*.[ch]') --include '~/glibc/TAGS'
+	etags $$(find $(ETAGS_BASE) -name '*.[ch]') --include '~/glibc/TAGS'
 	echo $(DEP_FILES)
 
 $(OBJS): $(OBJ_DIR)%.o : %.c | $(OBJ_DIR)
@@ -62,7 +78,10 @@ $(LIBMLX):
 $(LIBFT):
 	$(MAKE) -C $(LIBFT_DIR)  #--no-print-directory
 
-.PHONY: all clean fclean re bonus nur_%
+.PHONY: all clean fclean re bonus run run_invalid
+
+bonus:
+	$(MAKE) WITH_BONUS=1
 
 clean:
 	rm -fr $(OBJ_DIR) **/*~ *~ **/.#*
