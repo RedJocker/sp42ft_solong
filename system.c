@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42sp...>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 18:59:37 by maurodri          #+#    #+#             */
-/*   Updated: 2024/03/28 23:56:25 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/03/29 23:10:52 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,15 +52,20 @@ void	system_game_end(t_game *game)
 
 static void	system_init_window_size(t_game *game)
 {
-	int	width;
-	int	height;
+	int	map_w;
+	int map_h;
+	t_screen_overflow	over;
 
 	game->ctx.block_size = 32;
 	game->ctx.window_width = WIDTH;
 	game->ctx.window_height = HEIGHT;
-	width = game->ctx.block_size * map_width(&game->map);
-	height = game->ctx.block_size * map_height(&game->map);
-	system_map_center(game, width, height);
+	map_w = game->ctx.block_size * map_width(&game->map);
+	map_h = game->ctx.block_size * map_width(&game->map);
+	system_map_center(game, map_w, map_h);
+	if (map_w > WIDTH)
+		game->ctx.window_width = map_w;
+	if (map_h > HEIGHT)
+		game->ctx.window_height = map_h;
 }
 
 void	system_resizefunc(int32_t width, int32_t height, t_game *game)
@@ -68,10 +73,14 @@ void	system_resizefunc(int32_t width, int32_t height, t_game *game)
 	t_game_state		state;
 	t_screen_overflow	over;
 	int					h_pos[2];
+	int					map_h_w[2];
 
-	game->ctx.window_width = game->ctx.block_size * map_width(&game->map);
-	game->ctx.window_height = game->ctx.block_size * map_height(&game->map);
-	system_map_center(game, width, height);
+	
+	game->ctx.window_width = width;
+	game->ctx.window_height = height;
+	map_h_w[0] = game->ctx.block_size * map_height(&game->map);
+	map_h_w[1] = game->ctx.block_size * map_width(&game->map);
+	system_map_center(game, map_h_w[1], map_h_w[0]);
 	over = system_hero_screen_overflown(game);
 	h_pos[0] = (game->map.hero->y * game->ctx.block_size)
 		+ game->ctx.overflow_y_offset + game->ctx.window_y_offset;

@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42sp...>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 22:10:38 by maurodri          #+#    #+#             */
-/*   Updated: 2024/03/28 23:58:15 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/03/29 23:02:46 by maurodri         ###   ########.fr       */
 /*   Updated: 2024/03/18 22:25:24 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
@@ -107,22 +107,20 @@ void	system_update_drawables_pos(
 	}
 }
 
-void	system_map_center(t_game *game, int width, int height)
+void	system_map_center(t_game *game, int map_width, int map_height)
 {
-	if (game->ctx.window_width < width)
+	if (map_width < game->ctx.window_width)
 	{
-		game->ctx.window_x_offset = (width - game->ctx.window_width) / 2;
+		game->ctx.window_x_offset = (game->ctx.window_width - map_width) / 2;
 		game->ctx.overflow_x_offset = 0;
 	}
 	else
 		game->ctx.window_x_offset = 0;
-	if (game->ctx.window_height < height)
+	if (map_height < game->ctx.window_height)
 	{
-		game->ctx.window_y_offset = (height - game->ctx.window_height) / 2;
+		game->ctx.window_y_offset = (game->ctx.window_height - map_height) / 2;
 		game->ctx.overflow_y_offset = 0;
 	}
 	else
 		game->ctx.window_y_offset = 0;
-	game->ctx.window_width = width;
-	game->ctx.window_height = height;
 }
