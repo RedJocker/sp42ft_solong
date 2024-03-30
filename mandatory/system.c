@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42sp...>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 18:59:37 by maurodri          #+#    #+#             */
-/*   Updated: 2024/03/30 00:33:25 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/03/30 02:46:21 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,11 +78,11 @@ void	system_resizefunc(int32_t width, int32_t height, t_game *game)
 	map_h_w[0] = game->ctx.block_size * map_height(&game->map);
 	map_h_w[1] = game->ctx.block_size * map_width(&game->map);
 	system_map_center(game, map_h_w[1], map_h_w[0]);
-	over = system_hero_screen_overflown(game);
 	h_pos[0] = (game->map.hero->y * game->ctx.block_size)
 		+ game->ctx.overflow_y_offset + game->ctx.window_y_offset;
 	h_pos[1] = (game->map.hero->x * game->ctx.block_size)
 		+ game->ctx.overflow_x_offset + game->ctx.window_x_offset;
+	over = system_hero_screen_overflown(game);
 	if ((over & SCREEN_OVERFLOW_DOWN) == SCREEN_OVERFLOW_DOWN)
 		game->ctx.overflow_y_offset -= (
 				h_pos[0] - height + 2 * (game->ctx.block_size));

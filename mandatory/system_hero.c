@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42sp...>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 20:14:03 by maurodri          #+#    #+#             */
-/*   Updated: 2024/03/28 23:59:44 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/03/30 02:44:45 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,22 +44,24 @@ void	system_hero_move(t_game *game, t_entity *hero)
 t_screen_overflow	system_hero_screen_overflown(t_game *game)
 {
 	t_drawable			*dwb;
-	mlx_instance_t		ist;
+	int					h_pos[2];
 	t_screen_overflow	over;
 	int					half_block;
 
+	h_pos[0] = (game->map.hero->y * game->ctx.block_size)
+		+ game->ctx.overflow_y_offset + game->ctx.window_y_offset;
+	h_pos[1] = (game->map.hero->x * game->ctx.block_size)
+		+ game->ctx.overflow_x_offset + game->ctx.window_x_offset;
 	over = 0;
-	dwb = ft_arraylist_get(game->map.hero->drawables, 0);
-	ist = dwb->img->instances[0];
 	half_block = game->ctx.block_size / 2;
-	if (ist.x + half_block < 0 + game->ctx.block_size)
+	if (h_pos[1] + half_block < 0 + game->ctx.block_size)
 		over |= SCREEN_OVERFLOW_LEFT;
-	else if (ist.x + half_block > game->ctx.window_width - game->ctx.block_size)
+	else if (h_pos[1] + half_block > game->ctx.window_width - game->ctx.block_size)
 		over |= SCREEN_OVERFLOW_RIGHT;
-	if (ist.y + half_block < 0 + game->ctx.block_size)
+	if (h_pos[0] + half_block < 0 + game->ctx.block_size)
 		over |= SCREEN_OVERFLOW_UP;
 	else if (
-		ist.y + half_block > game->ctx.window_height - game->ctx.block_size)
+		h_pos[0] + half_block > game->ctx.window_height - game->ctx.block_size)
 		over |= SCREEN_OVERFLOW_DOWN;
 	return (over);
 }
