@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42sp...>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 18:59:37 by maurodri          #+#    #+#             */
-/*   Updated: 2024/03/29 23:10:52 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/03/30 00:33:25 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,6 @@ static void	system_init_window_size(t_game *game)
 {
 	int	map_w;
 	int map_h;
-	t_screen_overflow	over;
 
 	game->ctx.block_size = 32;
 	game->ctx.window_width = WIDTH;
@@ -70,12 +69,10 @@ static void	system_init_window_size(t_game *game)
 
 void	system_resizefunc(int32_t width, int32_t height, t_game *game)
 {
-	t_game_state		state;
 	t_screen_overflow	over;
 	int					h_pos[2];
 	int					map_h_w[2];
 
-	
 	game->ctx.window_width = width;
 	game->ctx.window_height = height;
 	map_h_w[0] = game->ctx.block_size * map_height(&game->map);

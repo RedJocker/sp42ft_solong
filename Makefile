@@ -6,7 +6,7 @@
 #    By: maurodri <maurodri@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/05 06:51:38 by maurodri          #+#    #+#              #
-#    Updated: 2024/03/28 20:58:03 by maurodri         ###   ########.fr        #
+#    Updated: 2024/03/30 00:23:09 by maurodri         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -37,7 +37,7 @@ OBJS := $(addprefix $(OBJ_DIR), $(patsubst %.c, %.o, $(SRCS)))
 DEP_FLAGS := -MP -MD
 DEP_FILES := $(patsubst %.o, %.d, $(OBJS))
 INCLUDES := -I./ -I$(LIBMLX_DIR)/include -I$(LIBFT_DIR)/includes
-VPATH := ./
+VPATH := ./ ./mandatory
 CFLAGS := -g3 -fsanitize=address -fsanitize=undefined -Wall -Wextra #-Werror 
 LFLAGS := -ldl -lglfw -pthread -lm
 CC := cc
@@ -56,6 +56,7 @@ $(OBJ_DIR):
 	@mkdir -p $@
 
 $(LIBMLX):
+	cmake $(LIBMLX_DIR) -B $(LIBMLX_DIR)/build
 	$(MAKE) -C $(LIBMLX_DIR)/build  #--no-print-directory
 
 $(LIBFT):
