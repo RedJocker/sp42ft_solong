@@ -6,7 +6,7 @@
 #    By: maurodri <maurodri@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/05 06:51:38 by maurodri          #+#    #+#              #
-#    Updated: 2024/03/30 01:04:11 by maurodri         ###   ########.fr        #
+#    Updated: 2024/03/30 04:17:57 by maurodri         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -32,7 +32,23 @@ FILES := main.c \
 		system_map.c \
 		system_loop.c
 
-BONUS_FILES := main_bonus.c
+BONUS_FILES := context_bonus.c \
+		entity_bonus.c \
+		entity_hero_bonus.c \
+		entity_init_bonus.c \
+		main_bonus.c \
+		map_bonus.c \
+		map_entity_bonus.c \
+		map_hero_bonus.c \
+		map_init_bonus.c \
+		map_validate_bonus.c \
+		map_validate_path_bonus.c \
+		system_bonus.c \
+		system_hero_bonus.c \
+		system_loop_bonus.c \
+		system_map_bonus.c \
+		system_quit_bonus.c 
+
 OBJ_DIR := ./obj/
 MANDATORY_OBJS := $(addprefix $(OBJ_DIR), $(patsubst %.c, %.o, $(FILES)))
 BONUS_OBJS := $(addprefix $(OBJ_DIR), $(patsubst %.c, %.o, $(BONUS_FILES)))

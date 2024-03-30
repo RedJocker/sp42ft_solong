@@ -1,6 +1,8 @@
 -I
 ./
 -I
+./bonus 
+-I
 ./lib/MLX42/include
 -I
 ./lib/libftx/includes

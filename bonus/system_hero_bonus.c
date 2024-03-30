@@ -1,19 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   system_hero.c                                      :+:      :+:    :+:   */
+/*   system_hero_bonus.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: maurodri <maurodri@student.42sp...>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/18 20:14:03 by maurodri          #+#    #+#             */
-/*   Updated: 2024/03/30 04:26:35 by maurodri         ###   ########.fr       */
+/*   Created: 2024/03/30 04:06:31 by maurodri          #+#    #+#             */
+/*   Updated: 2024/03/30 04:26:04 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "system.h"
-#include "system_internal.h"
-#include "entity.h"
-#include "map.h"
+#include "system_bonus.h"
+#include "system_internal_bonus.h"
+#include "entity_bonus.h"
+#include "map_bonus.h"
 #include "ft_stdio.h"
 
 void	system_hero_move(t_game *game, t_entity *hero)
