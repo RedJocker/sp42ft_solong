@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42sp...>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 04:08:53 by maurodri          #+#    #+#             */
-/*   Updated: 2024/03/31 00:22:15 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/03/31 02:18:19 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,6 +113,7 @@ typedef struct s_game
 typedef enum e_component_type
 {
 	MOVEABLE,
+	ANIMATED
 }	t_component_type;
 
 typedef struct s_component
@@ -137,5 +138,18 @@ typedef struct s_moveable
 	t_direction	direction;
 	t_move_fun	move;
 }	t_moveable;
+
+typedef void	(*t_animate_fun)(t_entity *entity, t_game *game);
+
+typedef struct s_animated
+{
+	t_animate_fun animate;
+}	t_animated;
+
+typedef union u_components_union
+{
+	t_moveable moveable;
+	t_animated animated;
+} t_components_union;
 
 #endif

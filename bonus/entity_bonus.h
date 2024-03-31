@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42sp...>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 04:08:47 by maurodri          #+#    #+#             */
-/*   Updated: 2024/03/30 22:33:59 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/03/31 02:27:30 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int				entity_init_drawables(
 					t_entity *entity, t_arraylist drawables_ctx, t_game *game);
 int				entity_init_components(t_entity *entity, t_game *game);
 // entity_hero.c
-void			entity_hero_animate(t_entity *hero);
+void			entity_hero_animate(t_entity *hero, t_game *game);
 t_moveable		*entity_hero_get_moveable(t_entity *hero);
 t_direction		entity_hero_move(t_entity *entity, t_game *game);
 void			entity_hero_components_destroy(t_component *component);

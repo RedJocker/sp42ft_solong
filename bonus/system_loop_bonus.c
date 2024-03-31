@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42sp...>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 04:06:32 by maurodri          #+#    #+#             */
-/*   Updated: 2024/03/30 04:24:24 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/03/31 02:28:58 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	system_loop(t_game *game)
 		game->exit_status = OK;
 		mlx_close_window(game->mlx);
 	}
-	entity_hero_animate(game->map.hero);
+	entity_hero_animate(game->map.hero, game);
 	if (game->state.gst == HERO_WAIT)
 		system_hero_wait_input(game, game->map.hero);
 	else if (game->state.gst == HERO_MOVE)

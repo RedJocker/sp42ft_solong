@@ -6,10 +6,11 @@
 /*   By: maurodri <maurodri@student.42sp...>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 04:06:20 by maurodri          #+#    #+#             */
-/*   Updated: 2024/03/30 04:20:23 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/03/31 03:24:13 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "so_long_bonus.h"
 #include "system_bonus.h"
 #include "entity_bonus.h"
 #include "ft_stdio.h"
@@ -33,33 +34,54 @@ void	entity_hero_components_destroy(t_component *component)
 {
 	if (component->type == MOVEABLE)
 		free(component->cmp);
+	else if (component->type == ANIMATED)
+		free(component->cmp);
 	free(component);
+}
+
+int entity_hero_init_component(
+	t_entity *entity, t_component_type c_type, size_t type_size)
+{
+	t_component			*component;
+	t_components_union	*cmps;
+
+	component = malloc(sizeof(t_component));
+	if (!component)
+		return (system_quit_invalid("Failed to alloc component for hero"));
+	component->type = c_type;
+	cmps = malloc(type_size);
+	if (!cmps)
+		return (system_quit_invalid("Failed alloc component for hero"));
+	component->cmp = cmps;
+	if (c_type == MOVEABLE)
+		cmps->moveable.move = entity_hero_move;
+	else if (c_type == ANIMATED)
+		cmps->animated.animate = entity_hero_animate;
+	entity->components = ft_arraylist_add(entity->components, component);
 }
 
 int	entity_hero_init_components(t_entity *entity)
 {
-	t_component	*component;
-	t_moveable	*moveable;
-
+	t_component_type	c_type[2];	
+	int					i;
+	size_t				type_size[2];
+	
 	entity->components = ft_arraylist_new(
 			(t_vfun1)entity_hero_components_destroy);
 	if (!entity->components)
 		return (system_quit_invalid("Failed to create "
 				"components list for hero"));
-	component = malloc(sizeof(t_component));
-	if (!component)
-		return (system_quit_invalid("Failed to alloc component for hero"));
-	component->type = MOVEABLE;
-	moveable = malloc(sizeof(t_moveable));
-	if (!moveable)
-		return (system_quit_invalid("Failed to alloc moveable for hero"));
-	component->cmp = moveable;
-	moveable->move = entity_hero_move;
-	entity->components = ft_arraylist_add(entity->components, component);
+	i = -1;
+	c_type[0] = MOVEABLE;
+	type_size[0] = sizeof(t_moveable);
+	c_type[1] = ANIMATED;
+	type_size[1] = sizeof(t_animated);
+	while (++i < 2)
+		entity_hero_init_component(entity, c_type[i], type_size[i]);
 	return (1);
 }
 
-void	entity_hero_animate(t_entity *hero)
+void	entity_hero_animate(t_entity *hero, t_game *game)
 {
 	t_drawable	*dwble;
 	size_t		i;
@@ -67,7 +89,7 @@ void	entity_hero_animate(t_entity *hero)
 	t_moveable	*m;
 	size_t		offset;
 
-	m = entity_hero_get_moveable(hero);
+	m = entity_hero_get_moveable(game->map.hero);
 	if (m->direction == UP)
 		offset = 6;
 	else if (m->direction == DOWN)
