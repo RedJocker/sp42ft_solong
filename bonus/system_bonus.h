@@ -6,12 +6,12 @@
 /*   By: maurodri <maurodri@student.42sp...>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 04:08:54 by maurodri          #+#    #+#             */
-/*   Updated: 2024/03/30 04:23:59 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/03/30 22:34:38 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef SYSTEM_H
-# define SYSTEM_H
+#ifndef SYSTEM_BONUS_H
+# define SYSTEM_BONUS_H
 
 # include "so_long_bonus.h"
 

@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42sp...>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 04:06:30 by maurodri          #+#    #+#             */
-/*   Updated: 2024/03/30 04:23:47 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/03/30 22:35:21 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ void	system_game_end(t_game *game)
 static void	system_init_window_size(t_game *game)
 {
 	int	map_w;
-	int map_h;
+	int	map_h;
 
 	game->ctx.block_size = 32;
 	game->ctx.window_width = WIDTH;

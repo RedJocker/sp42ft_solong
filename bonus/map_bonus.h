@@ -6,12 +6,12 @@
 /*   By: maurodri <maurodri@student.42sp...>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 04:08:49 by maurodri          #+#    #+#             */
-/*   Updated: 2024/03/30 04:21:34 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/03/30 22:34:10 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MAP_H
-# define MAP_H
+#ifndef MAP_BONUS_H
+# define MAP_BONUS_H
 
 # include "so_long_bonus.h"
 

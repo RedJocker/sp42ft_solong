@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42sp...>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 04:06:31 by maurodri          #+#    #+#             */
-/*   Updated: 2024/03/30 04:26:04 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/03/30 22:38:16 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,22 +45,22 @@ t_screen_overflow	system_hero_screen_overflown(t_game *game)
 {
 	int					h_pos[2];
 	t_screen_overflow	over;
-	int					half_block;
+	int					half_bk;
 
 	h_pos[0] = (game->map.hero->y * game->ctx.block_size)
 		+ game->ctx.overflow_y_offset + game->ctx.window_y_offset;
 	h_pos[1] = (game->map.hero->x * game->ctx.block_size)
 		+ game->ctx.overflow_x_offset + game->ctx.window_x_offset;
 	over = 0;
-	half_block = game->ctx.block_size / 2;
-	if (h_pos[1] + half_block < 0 + game->ctx.block_size)
+	half_bk = game->ctx.block_size / 2;
+	if (h_pos[1] + half_bk < 0 + game->ctx.block_size)
 		over |= SCREEN_OVERFLOW_LEFT;
-	else if (h_pos[1] + half_block > game->ctx.window_width - game->ctx.block_size)
+	else if (h_pos[1] + half_bk > game->ctx.window_width - game->ctx.block_size)
 		over |= SCREEN_OVERFLOW_RIGHT;
-	if (h_pos[0] + half_block < 0 + game->ctx.block_size)
+	if (h_pos[0] + half_bk < 0 + game->ctx.block_size)
 		over |= SCREEN_OVERFLOW_UP;
 	else if (
-		h_pos[0] + half_block > game->ctx.window_height - game->ctx.block_size)
+		h_pos[0] + half_bk > game->ctx.window_height - game->ctx.block_size)
 		over |= SCREEN_OVERFLOW_DOWN;
 	return (over);
 }

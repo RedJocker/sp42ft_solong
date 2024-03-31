@@ -6,12 +6,12 @@
 /*   By: maurodri <maurodri@student.42sp...>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 04:08:47 by maurodri          #+#    #+#             */
-/*   Updated: 2024/03/30 04:20:05 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/03/30 22:33:59 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef ENTITY_H
-# define ENTITY_H
+#ifndef ENTITY_BONUS_H
+# define ENTITY_BONUS_H
 
 # include "so_long_bonus.h"
 

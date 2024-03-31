@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42sp...>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 23:03:28 by maurodri          #+#    #+#             */
-/*   Updated: 2024/03/12 23:06:20 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/03/30 22:40:23 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ static void	map_hero_move_to_exit(
 
 void	map_hero_switch_position(
 	t_game *game, t_entity *other, size_t new_pos[2], size_t old_pos[2])
-{	
+{
 	if (!other)
 		map_hero_move_to_floor(game, new_pos, old_pos);
 	else if (other->type == ITEM)
