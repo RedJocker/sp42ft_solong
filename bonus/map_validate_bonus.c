@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42sp...>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 04:06:26 by maurodri          #+#    #+#             */
-/*   Updated: 2024/03/30 04:23:06 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/03/31 00:22:39 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ int32_t	map_validate_entities(t_map *map, char char_histogram[256], int pos[2])
 		i[1] = -1;
 		while (row[++i[1]])
 		{
-			if (!ft_strchr("10EPC", row[i[1]]))
+			if (!ft_strchr("10EPCV", row[i[1]]))
 				return (system_quit_invalid("Invalid character on map"));
 			char_histogram[(int) row[i[1]]]++;
 			if (row[i[1]] == 'P')

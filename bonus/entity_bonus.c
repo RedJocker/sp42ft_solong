@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42sp...>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 04:06:18 by maurodri          #+#    #+#             */
-/*   Updated: 2024/03/30 04:19:47 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/03/31 00:22:37 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@ t_entity_type	entity_type_by_ch(char ch)
 		type = WALL;
 	else if (ch == 'e')
 		type = EXIT;
+	else if (ch == 'V')
+		type = VILAIN;
 	else
 		type = FLOOR;
 	return (type);

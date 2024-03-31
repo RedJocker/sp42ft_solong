@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42sp...>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 20:44:03 by maurodri          #+#    #+#             */
-/*   Updated: 2024/03/30 00:10:55 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/03/31 00:30:04 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ static int32_t	context_init_drawables_list(t_context *ctx)
 	return (1);
 }
 
-static int32_t	context_init_load_hero_asserts(t_context *ctx, mlx_t *mlx)
+static int32_t	context_init_load_hero_assets(t_context *ctx, mlx_t *mlx)
 {
 	int32_t	is_ok;
 
@@ -103,7 +103,7 @@ int32_t	context_init(t_context *ctx, mlx_t *mlx)
 	while (++i <= EXIT)
 	{
 		if (i == HERO)
-			context_init_load_hero_asserts(ctx, mlx);
+			is_ok = context_init_load_hero_assets(ctx, mlx);
 		else if (i == ITEM)
 			is_ok = context_load_asset(ctx, "./assets/item.png", mlx, ITEM);
 		else if (i == WALL)

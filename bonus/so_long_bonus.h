@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42sp...>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 04:08:53 by maurodri          #+#    #+#             */
-/*   Updated: 2024/03/30 22:34:26 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/03/31 00:22:15 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ typedef enum e_entity_type
 	HERO = 0,
 	ITEM,
 	WALL,
-	//ENEMY,
+	VILAIN,
 	FLOOR,
 	EXIT,
 }	t_entity_type;
