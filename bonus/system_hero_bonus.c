@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42sp...>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 04:06:31 by maurodri          #+#    #+#             */
-/*   Updated: 2024/04/01 01:45:20 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/04/01 18:56:55 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ void	system_hero_move(t_game *game, t_entity *hero)
 		system_hero_move_count(game);
 	}
 	else if (other->type == VILAIN)
-		system_game_end(game);
+		system_game_over(game);
 	if (game->state.gst == HERO_MOVE)
 		game->state.gst = HERO_UPDATE_POS;
 }

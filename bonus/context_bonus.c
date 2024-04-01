@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42sp...>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 04:05:58 by maurodri          #+#    #+#             */
-/*   Updated: 2024/04/01 01:00:20 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/04/01 18:39:12 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,21 @@ static int32_t	context_init_load_villain_assets(
 	if (!is_ok)
 		return (0);
 	is_ok = context_load_asset(ctx, "./assets/villain2.png", mlx, VILAIN);
+	if (!is_ok)
+		return (0);
+	is_ok = context_load_asset(ctx, "./assets/villain3.png", mlx, VILAIN);
+	if (!is_ok)
+		return (0);
+	is_ok = context_load_asset(ctx, "./assets/villain4.png", mlx, VILAIN);
+	if (!is_ok)
+		return (0);
+	is_ok = context_load_asset(ctx, "./assets/villain5.png", mlx, VILAIN);
+	if (!is_ok)
+		return (0);
+	is_ok = context_load_asset(ctx, "./assets/villain6.png", mlx, VILAIN);
+	if (!is_ok)
+		return (0);
+	is_ok = context_load_asset(ctx, "./assets/villain7.png", mlx, VILAIN);
 	if (!is_ok)
 		return (0);
 	return (1);

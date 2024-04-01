@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42sp...>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 04:08:53 by maurodri          #+#    #+#             */
-/*   Updated: 2024/04/01 01:47:08 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/04/01 18:33:14 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ typedef enum s_game_state
 	MAP_UPDATE_POS,
 	EXIT_ENABLE,
 	GAME_END,
+	GAME_OVER
 }	t_game_state;
 
 typedef enum s_screen_overflow

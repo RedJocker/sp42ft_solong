@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42sp...>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 04:06:32 by maurodri          #+#    #+#             */
-/*   Updated: 2024/04/01 01:27:22 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/04/01 18:58:01 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,11 @@ void	system_loop(t_game *game)
 	{
 		game->exit_status = OK;
 		mlx_close_window(game->mlx);
+	}
+	if (game->state.gst == GAME_OVER)
+	{
+		system_game_over(game);
+		return ;
 	}
 	system_animate(game);
 	if (game->state.gst == HERO_WAIT)
