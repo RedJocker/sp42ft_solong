@@ -6,14 +6,13 @@
 /*   By: maurodri <maurodri@student.42sp...>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 04:06:20 by maurodri          #+#    #+#             */
-/*   Updated: 2024/04/01 01:48:09 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/04/01 19:47:18 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long_bonus.h"
 #include "system_bonus.h"
 #include "entity_bonus.h"
-#include "ft_stdio.h"
 
 t_direction	entity_hero_move(t_entity *entity, t_game *game)
 {
@@ -108,12 +107,4 @@ void	entity_hero_animate(t_entity *hero, t_game *game)
 				(size_t) mlx_get_time() % 2) + offset == i;
 		i++;
 	}
-}
-
-t_moveable	*entity_hero_get_moveable(t_entity *hero)
-{
-	t_component	*component;
-
-	component = ft_arraylist_get(hero->components, 0);
-	return (component->cmp);
 }

@@ -1,21 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   system_bonus.h                                     :+:      :+:    :+:   */
+/*   entity_hero2_bonus.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maurodri <maurodri@student.42sp...>        +#+  +:+       +#+        */
+/*   By: maurodri <maurodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/30 04:08:54 by maurodri          #+#    #+#             */
-/*   Updated: 2024/04/01 19:34:40 by maurodri         ###   ########.fr       */
+/*   Created: 2024/04/01 19:46:08 by maurodri          #+#    #+#             */
+/*   Updated: 2024/04/01 19:46:57 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef SYSTEM_BONUS_H
-# define SYSTEM_BONUS_H
+#include "so_long_bonus.h"
 
-# include "so_long_bonus.h"
+t_moveable	*entity_hero_get_moveable(t_entity *hero)
+{
+	t_component	*component;
 
-int32_t				system_quit_invalid(char *err_msg);
-int32_t				system_init(t_game *game, char *map_path);
-
-#endif
+	component = ft_arraylist_get(hero->components, 0);
+	return (component->cmp);
+}

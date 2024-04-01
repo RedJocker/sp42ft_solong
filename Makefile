@@ -1,4 +1,4 @@
-#******************************************************************************#
+ #******************************************************************************#
 #                                                                              #
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
@@ -6,7 +6,7 @@
 #    By: maurodri <maurodri@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/05 06:51:38 by maurodri          #+#    #+#              #
-#    Updated: 2024/03/31 23:22:52 by maurodri         ###   ########.fr        #
+#    Updated: 2024/04/01 19:51:17 by maurodri         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -35,6 +35,7 @@ FILES := main.c \
 BONUS_FILES := context_bonus.c \
 		entity_bonus.c \
 		entity_hero_bonus.c \
+		entity_hero2_bonus.c \
 		entity_villain_bonus.c \
 		entity_init_bonus.c \
 		main_bonus.c \
@@ -45,6 +46,8 @@ BONUS_FILES := context_bonus.c \
 		map_validate_bonus.c \
 		map_validate_path_bonus.c \
 		system_bonus.c \
+		system_animate_bonus.c \
+		system_game_bonus.c \
 		system_hero_bonus.c \
 		system_loop_bonus.c \
 		system_map_bonus.c \
@@ -72,7 +75,6 @@ else
 	OBJS := $(MANDATORY_OBJS)
 	ETAGS_BASE := ./mandatory
 endif
-
 
 all: $(NAME)
 

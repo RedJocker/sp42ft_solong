@@ -6,12 +6,11 @@
 /*   By: maurodri <maurodri@student.42sp...>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 04:06:30 by maurodri          #+#    #+#             */
-/*   Updated: 2024/04/01 19:11:12 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/04/01 19:43:38 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "system_bonus.h"
-#include "MLX42/MLX42.h"
 #include "system_internal_bonus.h"
 #include "ft_memlib.h"
 #include "entity_bonus.h"
@@ -32,51 +31,6 @@ int32_t	system_init_entities(t_game *game)
 		(void *(*)(void*)) entity_remove_floor,
 		(t_vfun1) entity_destroy);
 	return (1);
-}
-
-void	system_game_over(t_game *game)
-{
-	int 		pos[2];
-	t_direction dir;
-	t_entity	*villain;
-	int 		i_j[2];
-
-	game->state.gst = GAME_OVER;
-	if (game->state.acc_time < 2.0)
-		game->state.acc_time += game->mlx->delta_time;
-	else
-		mlx_close_window(game->mlx);
-	dir = entity_hero_get_moveable(game->map.hero)->direction;
-	pos[0] = game->map.hero->y + (dir == DOWN) - (dir == UP);
-	pos[1] = game->map.hero->x + (dir == RIGHT) - (dir == LEFT);
-	villain = map_entity_get(game, pos[1], pos[0]);
-	i_j[1] = ((int) (game->state.acc_time * 5.0));
-	if (i_j[1] > 5)
-		i_j[1] = 5; 
-	i_j[0] = -1;
-	while (++i_j[0]< 6)
-	{
-		t_drawable *villain_drawable = (
-			ft_arraylist_get(villain->drawables, i_j[0]));
-		villain_drawable->img->instances[villain_drawable->i].enabled = (
-			i_j[0] == i_j[1]);		
-	}
-}
-
-void	system_game_end(t_game *game)
-{
-	t_drawable		*exit_drawable;
-	int				is_enabled;
-
-	system_map_update_pos(system_hero_screen_overflown(game), game);
-	game->state.gst = GAME_END;
-	exit_drawable = ft_arraylist_get(game->map.exit->drawables, 0);
-	is_enabled = ((int) mlx_get_time()) % 3 == 0;
-	exit_drawable->img->instances[exit_drawable->i].enabled = is_enabled;
-	if (game->state.acc_time < 3.0)
-		game->state.acc_time += game->mlx->delta_time;
-	else
-		mlx_close_window(game->mlx);
 }
 
 static void	system_init_window_size(t_game *game)
