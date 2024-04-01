@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42sp...>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 04:08:53 by maurodri          #+#    #+#             */
-/*   Updated: 2024/03/31 02:18:19 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/04/01 01:47:08 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,7 @@ typedef struct s_context
 	int			window_x_offset;
 	int			overflow_y_offset;
 	int			overflow_x_offset;
+	mlx_image_t	*count_img;
 }	t_context;
 
 typedef struct s_entity
@@ -139,17 +140,17 @@ typedef struct s_moveable
 	t_move_fun	move;
 }	t_moveable;
 
-typedef void	(*t_animate_fun)(t_entity *entity, t_game *game);
+typedef void		(*t_animate_fun)(t_entity *entity, t_game *game);
 
 typedef struct s_animated
 {
-	t_animate_fun animate;
+	t_animate_fun	animate;
 }	t_animated;
 
 typedef union u_components_union
 {
-	t_moveable moveable;
-	t_animated animated;
-} t_components_union;
+	t_moveable	moveable;
+	t_animated	animated;
+}	t_components_union;
 
 #endif

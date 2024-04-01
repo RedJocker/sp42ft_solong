@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42sp...>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 04:06:30 by maurodri          #+#    #+#             */
-/*   Updated: 2024/03/30 22:35:21 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/04/01 01:20:07 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,8 +112,8 @@ int32_t	system_init(t_game *game, char *map_path)
 		return (system_quit_panic(game, ERROR, "Failed to init assets"));
 	if (!system_init_entities(game))
 		return (system_quit_panic(game, ERROR, "Failed to init entities"));
-	mlx_set_window_limit(game->mlx, game->ctx.block_size * 4,
-		game->ctx.block_size * 4, -1, -1);
+	mlx_set_window_limit(game->mlx, game->ctx.block_size * 10,
+		game->ctx.block_size * 10, -1, -1);
 	mlx_loop_hook(game->mlx, (t_vfun1) system_loop, game);
 	mlx_close_hook(game->mlx, system_quit_ok, game);
 	mlx_resize_hook(game->mlx, (mlx_resizefunc) system_resizefunc, game);

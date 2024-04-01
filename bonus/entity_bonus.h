@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42sp...>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 04:08:47 by maurodri          #+#    #+#             */
-/*   Updated: 2024/03/31 02:27:30 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/03/31 23:19:42 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,5 +31,9 @@ t_moveable		*entity_hero_get_moveable(t_entity *hero);
 t_direction		entity_hero_move(t_entity *entity, t_game *game);
 void			entity_hero_components_destroy(t_component *component);
 int				entity_hero_init_components(t_entity *entity);
+// entity_villain.c
+void			entity_villain_components_destroy(t_component *component);
+int				entity_villain_init_components(t_entity *entity);
+void			entity_villain_animate(t_entity *villain, t_game *game);
 
 #endif

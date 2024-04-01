@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42sp...>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 04:06:20 by maurodri          #+#    #+#             */
-/*   Updated: 2024/03/30 04:20:57 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/03/31 23:21:14 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,8 @@ int	entity_init_components(t_entity *entity, t_game *game)
 	(void) game;
 	if (entity->type == HERO)
 		return (entity_hero_init_components(entity));
+	if (entity->type == VILAIN)
+		return (entity_villain_init_components(entity));
 	else
 		return (1);
 }

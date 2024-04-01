@@ -6,11 +6,12 @@
 /*   By: maurodri <maurodri@student.42sp...>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 04:05:58 by maurodri          #+#    #+#             */
-/*   Updated: 2024/03/31 03:43:14 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/04/01 01:00:20 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "context_bonus.h"
+#include "MLX42/MLX42.h"
 #include "so_long_bonus.h"
 #include "system_bonus.h"
 
@@ -113,6 +114,7 @@ int32_t	context_init(t_context *ctx, mlx_t *mlx)
 	ctx->overflow_y_offset = 0;
 	if (!context_init_drawables_list(ctx))
 		return (system_quit_invalid("Failed to init ctx drawables"));
+	ctx->count_img = mlx_put_string(mlx, "movement count: 0", 10, 10);
 	i = -1;
 	while (++i <= EXIT)
 	{

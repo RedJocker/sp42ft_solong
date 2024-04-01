@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42sp...>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 04:06:20 by maurodri          #+#    #+#             */
-/*   Updated: 2024/03/31 03:24:13 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/04/01 01:48:09 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	entity_hero_components_destroy(t_component *component)
 	free(component);
 }
 
-int entity_hero_init_component(
+int	entity_hero_init_component(
 	t_entity *entity, t_component_type c_type, size_t type_size)
 {
 	t_component			*component;
@@ -58,6 +58,7 @@ int entity_hero_init_component(
 	else if (c_type == ANIMATED)
 		cmps->animated.animate = entity_hero_animate;
 	entity->components = ft_arraylist_add(entity->components, component);
+	return (1);
 }
 
 int	entity_hero_init_components(t_entity *entity)
@@ -65,7 +66,7 @@ int	entity_hero_init_components(t_entity *entity)
 	t_component_type	c_type[2];	
 	int					i;
 	size_t				type_size[2];
-	
+
 	entity->components = ft_arraylist_new(
 			(t_vfun1)entity_hero_components_destroy);
 	if (!entity->components)

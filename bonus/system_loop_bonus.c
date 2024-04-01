@@ -6,13 +6,32 @@
 /*   By: maurodri <maurodri@student.42sp...>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 04:06:32 by maurodri          #+#    #+#             */
-/*   Updated: 2024/03/31 02:28:58 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/04/01 01:27:22 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "collection/ft_arraylist.h"
 #include "system_bonus.h"
 #include "system_internal_bonus.h"
 #include "entity_bonus.h"
+
+static void	system_animate_entity(t_entity *entity, t_game *game)
+{
+	if (!entity)
+		return ;
+	if (entity->type == HERO)
+		entity_hero_animate(entity, game);
+	else if (entity ->type == VILAIN)
+		entity_villain_animate(entity, game);
+}
+
+void	system_animate(t_game *game)
+{
+	ft_arraylist_foreach2darg(
+		game->map.chart,
+		(void (*)(void *, void *)) system_animate_entity,
+		game);
+}
 
 void	system_loop(t_game *game)
 {
@@ -21,7 +40,7 @@ void	system_loop(t_game *game)
 		game->exit_status = OK;
 		mlx_close_window(game->mlx);
 	}
-	entity_hero_animate(game->map.hero, game);
+	system_animate(game);
 	if (game->state.gst == HERO_WAIT)
 		system_hero_wait_input(game, game->map.hero);
 	else if (game->state.gst == HERO_MOVE)

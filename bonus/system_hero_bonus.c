@@ -6,15 +6,34 @@
 /*   By: maurodri <maurodri@student.42sp...>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 04:06:31 by maurodri          #+#    #+#             */
-/*   Updated: 2024/03/30 23:02:06 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/04/01 01:45:20 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "MLX42/MLX42.h"
+#include "ft_memlib.h"
+#include "ft_string.h"
 #include "system_bonus.h"
 #include "system_internal_bonus.h"
 #include "entity_bonus.h"
 #include "map_bonus.h"
 #include "ft_stdio.h"
+#include "so_long_bonus.h"
+#include "libft.h"
+
+void	system_hero_move_count(t_game *game)
+{
+	char		countmsg[100];
+	char		*cntstr;
+
+	mlx_delete_image(game->mlx, game->ctx.count_img);
+	cntstr = ft_itoa(++game->state.move_count);
+	ft_bzero(countmsg, 100);
+	ft_strlcpy(countmsg, "movement count:     ", 20);
+	ft_strlcpy(countmsg + 16, cntstr, 84);
+	game->ctx.count_img = mlx_put_string(game->mlx, countmsg, 10, 10);
+	free(cntstr);
+}
 
 void	system_hero_move(t_game *game, t_entity *hero)
 {
@@ -34,9 +53,10 @@ void	system_hero_move(t_game *game, t_entity *hero)
 		old_pos[1] = hero->x;
 		old_pos[0] = hero->y;
 		map_hero_switch_position(game, other, new_pos, old_pos);
-		game->state.move_count++;
-		ft_printf("movement count: %5d\n", game->state.move_count);
+		system_hero_move_count(game);
 	}
+	else if (other->type == VILAIN)
+		system_game_end(game);
 	if (game->state.gst == HERO_MOVE)
 		game->state.gst = HERO_UPDATE_POS;
 }
@@ -70,7 +90,7 @@ void	system_hero_wait_input(t_game *game, t_entity *hero)
 	t_direction	direction;
 	t_moveable	*moveable;
 
-	if (game->state.acc_time < 0.09)
+	if (game->state.acc_time < 0.001)
 	{
 		game->state.acc_time += game->mlx->delta_time;
 	}
