@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42sp...>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 04:08:52 by maurodri          #+#    #+#             */
-/*   Updated: 2024/03/30 22:34:19 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/04/02 12:51:41 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 # include "so_long_bonus.h"
 
-# define MAX_MAP_SIZE 500
+# define MAX_MAP_SIZE 250
 
 int32_t		map_validate_retangular_shape(t_map *map);
 int32_t		map_validate_wall_row(t_map *map);
