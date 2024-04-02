@@ -6,11 +6,10 @@
 /*   By: maurodri <maurodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 19:35:32 by maurodri          #+#    #+#             */
-/*   Updated: 2024/04/01 19:38:45 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/04/01 22:09:15 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "system_bonus.h"
 #include "system_internal_bonus.h"
 #include "entity_bonus.h"
 #include "map_bonus.h"

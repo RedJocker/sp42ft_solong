@@ -6,12 +6,11 @@
 /*   By: maurodri <maurodri@student.42sp...>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 04:06:26 by maurodri          #+#    #+#             */
-/*   Updated: 2024/03/31 00:22:39 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/04/01 22:06:00 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "map_bonus.h"
-#include "map_internal_bonus.h"
 #include "system_bonus.h"
 #include "ft_string.h"
 #include "ft_memlib.h"

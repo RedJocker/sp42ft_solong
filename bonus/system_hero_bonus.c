@@ -6,20 +6,15 @@
 /*   By: maurodri <maurodri@student.42sp...>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 04:06:31 by maurodri          #+#    #+#             */
-/*   Updated: 2024/04/01 18:56:55 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/04/01 22:09:15 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "MLX42/MLX42.h"
 #include "ft_memlib.h"
 #include "ft_string.h"
-#include "system_bonus.h"
 #include "system_internal_bonus.h"
 #include "entity_bonus.h"
 #include "map_bonus.h"
-#include "ft_stdio.h"
-#include "so_long_bonus.h"
-#include "libft.h"
 
 void	system_hero_move_count(t_game *game)
 {

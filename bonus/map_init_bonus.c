@@ -6,13 +6,12 @@
 /*   By: maurodri <maurodri@student.42sp...>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 04:06:24 by maurodri          #+#    #+#             */
-/*   Updated: 2024/03/30 04:22:01 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/04/01 22:05:36 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <fcntl.h>
 #include <unistd.h>
-#include "map_bonus.h"
 #include "map_internal_bonus.h"
 #include "system_bonus.h"
 #include "entity_bonus.h"

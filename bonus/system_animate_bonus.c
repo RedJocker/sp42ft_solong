@@ -6,11 +6,10 @@
 /*   By: maurodri <maurodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 19:31:52 by maurodri          #+#    #+#             */
-/*   Updated: 2024/04/01 19:42:29 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/04/01 22:06:53 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "system_bonus.h"
 #include "entity_bonus.h"
 
 static void	system_animate_entity(t_entity *entity, t_game *game)

@@ -6,11 +6,10 @@
 /*   By: maurodri <maurodri@student.42sp...>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 04:06:24 by maurodri          #+#    #+#             */
-/*   Updated: 2024/03/30 22:35:55 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/04/01 22:05:05 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "map_bonus.h"
 #include "map_internal_bonus.h"
 
 static void	map_hero_collect_item(

@@ -6,11 +6,10 @@
 /*   By: maurodri <maurodri@student.42sp...>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 04:06:22 by maurodri          #+#    #+#             */
-/*   Updated: 2024/03/30 04:21:42 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/04/01 22:09:17 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "map_bonus.h"
 #include "map_internal_bonus.h"
 
 t_entity	*map_entity_get(t_game *game, int x, int y)

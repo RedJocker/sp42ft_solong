@@ -6,12 +6,11 @@
 /*   By: maurodri <maurodri@student.42sp...>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 04:06:18 by maurodri          #+#    #+#             */
-/*   Updated: 2024/04/01 01:49:00 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/04/01 22:02:55 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "entity_bonus.h"
-#include "system_bonus.h"
 
 t_entity_type	entity_type_by_ch(char ch)
 {

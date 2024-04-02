@@ -6,12 +6,10 @@
 /*   By: maurodri <maurodri@student.42sp...>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 04:06:33 by maurodri          #+#    #+#             */
-/*   Updated: 2024/03/30 04:24:40 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/04/01 22:08:40 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "MLX42/MLX42.h"
-#include "system_bonus.h"
 #include "system_internal_bonus.h"
 #include "map_bonus.h"
 

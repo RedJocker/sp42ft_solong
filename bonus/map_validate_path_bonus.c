@@ -6,12 +6,10 @@
 /*   By: maurodri <maurodri@student.42sp...>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 04:06:26 by maurodri          #+#    #+#             */
-/*   Updated: 2024/03/30 04:23:17 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/04/01 22:09:16 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "collection/ft_arraylist.h"
-#include "map_bonus.h"
 #include "map_internal_bonus.h"
 
 static int32_t	check_all_found(char char_histogram[256])

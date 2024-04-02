@@ -6,12 +6,10 @@
 /*   By: maurodri <maurodri@student.42sp...>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 04:06:32 by maurodri          #+#    #+#             */
-/*   Updated: 2024/04/01 19:34:41 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/04/01 22:09:10 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "collection/ft_arraylist.h"
-#include "system_bonus.h"
 #include "system_internal_bonus.h"
 
 void	system_loop_controller(t_game *game)

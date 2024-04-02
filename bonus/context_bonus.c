@@ -6,13 +6,10 @@
 /*   By: maurodri <maurodri@student.42sp...>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 04:05:58 by maurodri          #+#    #+#             */
-/*   Updated: 2024/04/01 18:39:12 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/04/01 22:02:24 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "context_bonus.h"
-#include "MLX42/MLX42.h"
-#include "so_long_bonus.h"
 #include "system_bonus.h"
 
 static int32_t	context_load_asset(
