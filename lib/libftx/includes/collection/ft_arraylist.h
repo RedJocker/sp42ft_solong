@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/27 17:52:00 by maurodri          #+#    #+#             */
-/*   Updated: 2024/04/01 01:50:37 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/04/02 01:31:44 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ void		ft_arraylist_swap2d(t_arraylist alst, size_t at1[2], size_t at2[2]);
 void		*ft_arraylist_pop(t_arraylist alst);
 void		*ft_arraylist_peek(t_arraylist alst);
 void		ft_arraylist_foreach(t_arraylist alst, void (*fun) (void *));
+void		ft_arraylist_foreacharg(
+				t_arraylist alst, void (*fun) (void *, void *), void *arg);
 void		ft_arraylist_foreach2d(t_arraylist alst, void (*fun) (void *));
 void		ft_arraylist_foreach2darg(
 				t_arraylist alst, void (*fun) (void *, void *), void *arg);

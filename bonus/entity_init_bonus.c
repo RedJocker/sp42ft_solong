@@ -6,10 +6,11 @@
 /*   By: maurodri <maurodri@student.42sp...>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 04:06:20 by maurodri          #+#    #+#             */
-/*   Updated: 2024/04/01 22:09:19 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/04/02 01:36:39 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "collection/ft_arraylist.h"
 #include "entity_bonus.h"
 #include "system_bonus.h"
 
@@ -46,6 +47,12 @@ int	entity_init_drawables(
 int	entity_init_components(t_entity *entity, t_game *game)
 {
 	(void) game;
+	if (entity->type == HERO || entity->type == VILAIN)
+	{
+		game->ctx.animated = ft_arraylist_add(game->ctx.animated, entity);
+		if (!game->ctx.animated)
+			return (system_quit_invalid("Failed to add entity to animated"));
+	}
 	if (entity->type == HERO)
 		return (entity_hero_init_components(entity));
 	if (entity->type == VILAIN)

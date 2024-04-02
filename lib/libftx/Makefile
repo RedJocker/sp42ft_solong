@@ -6,7 +6,7 @@
 #    By: maurodri <maurodri@student.42sp...>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/05 22:04:40 by maurodri          #+#    #+#              #
-#    Updated: 2024/03/31 23:40:34 by maurodri         ###   ########.fr        #
+#    Updated: 2024/04/02 01:32:43 by maurodri         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -82,6 +82,7 @@ FILES = ft_isalpha.c \
 		ft_arraylist_addat.c \
 		ft_arraylist_destroy.c \
 		ft_arraylist_foreach.c \
+		ft_arraylist_foreacharg.c \
 		ft_arraylist_foreach2d.c \
 		ft_arraylist_foreach2darg.c \
 		ft_arraylist_swap.c \

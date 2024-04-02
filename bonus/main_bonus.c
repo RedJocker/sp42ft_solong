@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42sp...>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 04:06:21 by maurodri          #+#    #+#             */
-/*   Updated: 2024/03/30 04:21:11 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/04/02 00:51:46 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ int32_t	main(int args_len, char *args[])
 	ft_arraylist_destroy(game.ctx.drawables);
 	ft_arraylist_destroy(game.ctx.textures);
 	ft_arraylist_destroy(game.map.chart);
+	ft_arraylist_destroy(game.ctx.animated);
 	if (game.mlx)
 		mlx_terminate(game.mlx);
 	entity_exit_destroy(game.map.exit);

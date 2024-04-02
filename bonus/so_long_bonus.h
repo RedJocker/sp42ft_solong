@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42sp...>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 04:08:53 by maurodri          #+#    #+#             */
-/*   Updated: 2024/04/01 23:58:54 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/04/02 00:32:11 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,8 @@ typedef struct s_state
 typedef struct s_context
 {
 	t_arraylist	drawables;
-	t_arraylist	textures;
+	t_arraylist textures;
+	t_arraylist animated;
 	int			block_size;
 	int			window_height;
 	int			window_width;
