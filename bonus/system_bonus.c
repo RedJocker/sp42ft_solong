@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42sp...>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 04:06:30 by maurodri          #+#    #+#             */
-/*   Updated: 2024/04/01 22:09:16 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/04/01 23:41:41 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ static void	system_init_window_size(t_game *game)
 	game->ctx.window_width = WIDTH;
 	game->ctx.window_height = HEIGHT;
 	map_w = game->ctx.block_size * map_width(&game->map);
-	map_h = game->ctx.block_size * map_width(&game->map);
+	map_h = game->ctx.block_size * map_height(&game->map);
 	system_map_center(game, map_w, map_h);
 	if (map_w > WIDTH)
 		game->ctx.window_width = map_w;

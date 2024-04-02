@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42sp...>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 04:06:24 by maurodri          #+#    #+#             */
-/*   Updated: 2024/04/01 22:05:36 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/04/01 23:21:28 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,6 @@ static void	*map_transform_string_line(void *s)
 	while (i_to_len[0] < i_to_len[1])
 	{
 		ch = ((char *)s)[i_to_len[0]];
-		if (ch == '\n')
-			break ;
 		type = malloc(sizeof(t_entity_type));
 		*type = entity_type_by_ch(ch);
 		if (!type)
