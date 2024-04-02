@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42sp...>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 04:06:31 by maurodri          #+#    #+#             */
-/*   Updated: 2024/04/01 22:09:15 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/04/02 12:44:36 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ void	system_hero_wait_input(t_game *game, t_entity *hero)
 	t_direction	direction;
 	t_moveable	*moveable;
 
-	if (game->state.acc_time < 0.001)
+	if (game->state.acc_time < 0.075)
 	{
 		game->state.acc_time += game->mlx->delta_time;
 	}
