@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42sp...>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 04:06:32 by maurodri          #+#    #+#             */
-/*   Updated: 2024/04/01 22:09:10 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/04/02 15:10:39 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,16 @@
 
 void	system_loop_controller(t_game *game)
 {
-	system_animate(game);
 	if (game->state.gst == HERO_WAIT)
+	{
+		system_animate(game);
 		system_hero_wait_input(game, game->map.hero);
+	}
 	else if (game->state.gst == HERO_MOVE)
 		system_hero_move(game, game->map.hero);
 	else if (game->state.gst == HERO_UPDATE_POS)
 	{
-		system_hero_update_drawables_pos(game);
+	  	system_hero_update_drawables_pos(game);
 		if (system_hero_screen_overflown(game) > 0)
 			game->state.gst = MAP_UPDATE_POS;
 		else
@@ -32,7 +34,7 @@ void	system_loop_controller(t_game *game)
 	else if (game->state.gst == EXIT_ENABLE)
 		system_exit_enable(game);
 	else if (game->state.gst == GAME_END)
-		system_game_end(game);
+		system_game_end(game); 
 }
 
 void	system_loop(t_game *game)

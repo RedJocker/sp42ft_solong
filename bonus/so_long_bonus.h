@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42sp...>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 04:08:53 by maurodri          #+#    #+#             */
-/*   Updated: 2024/04/02 00:32:11 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/04/02 13:34:31 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,8 @@ typedef struct s_context
 	int			window_x_offset;
 	int			overflow_y_offset;
 	int			overflow_x_offset;
-	mlx_image_t	*count_img;
+	mlx_image_t *count_img;
+	double		animation_acctime;
 }	t_context;
 
 typedef struct s_entity

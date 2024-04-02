@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 19:31:52 by maurodri          #+#    #+#             */
-/*   Updated: 2024/04/02 01:35:58 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/04/02 15:08:23 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,10 @@ static void	system_animate_entity(t_entity *entity, t_game *game)
 
 void	system_animate(t_game *game)
 {
+	game->ctx.animation_acctime += game->mlx->delta_time;
+	if (game->ctx.animation_acctime < 0.8)
+		return;
+	game->ctx.animation_acctime = 0;
 	ft_arraylist_foreacharg(
 		game->ctx.animated,
 		(void (*)(void *, void *)) system_animate_entity,
