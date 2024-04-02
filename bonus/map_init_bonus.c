@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42sp...>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 04:06:24 by maurodri          #+#    #+#             */
-/*   Updated: 2024/04/01 23:21:28 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/04/02 12:56:00 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,9 +58,9 @@ int32_t	map_init_read_lines(t_map *map, int fd)
 		if (!map->chart)
 			return (system_quit_invalid("Failed to add to map->chart\n"));
 		if (ft_strlen(str) > MAX_MAP_SIZE)
-			return ((system_quit_invalid("Invalid width for map, max 500")));
+			return ((system_quit_invalid("Invalid width for map, max 250")));
 		if (++rows > MAX_MAP_SIZE)
-			return ((system_quit_invalid("Invalid height for map, max 500")));
+			return ((system_quit_invalid("Invalid height for map, max 250")));
 		str = ft_chomp(get_next_line(fd));
 	}
 	return (1);
