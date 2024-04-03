@@ -6,10 +6,11 @@
 /*   By: maurodri <maurodri@student.42sp...>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 04:06:20 by maurodri          #+#    #+#             */
-/*   Updated: 2024/04/01 22:03:32 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/04/03 19:59:50 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "ft_memlib.h"
 #include "system_bonus.h"
 #include "entity_bonus.h"
 
@@ -46,8 +47,10 @@ int	entity_hero_init_component(
 	component = malloc(sizeof(t_component));
 	if (!component)
 		return (system_quit_invalid("Failed to alloc component for hero"));
+	ft_bzero(component, sizeof(t_component));
 	component->type = c_type;
 	cmps = malloc(type_size);
+	ft_bzero(cmps, type_size);
 	if (!cmps)
 		return (system_quit_invalid("Failed alloc component for hero"));
 	component->cmp = cmps;

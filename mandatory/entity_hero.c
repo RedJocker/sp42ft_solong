@@ -6,10 +6,12 @@
 /*   By: maurodri <maurodri@student.42sp...>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 00:05:53 by maurodri          #+#    #+#             */
-/*   Updated: 2024/03/18 22:26:24 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/04/03 20:04:05 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "ft_memlib.h"
+#include "so_long.h"
 #include "system.h"
 #include "entity.h"
 #include "ft_stdio.h"
@@ -53,6 +55,8 @@ int	entity_hero_init_components(t_entity *entity)
 	moveable = malloc(sizeof(t_moveable));
 	if (!moveable)
 		return (system_quit_invalid("Failed to alloc moveable for hero"));
+	ft_bzero(component, sizeof(t_component));
+	ft_bzero(moveable, sizeof(t_moveable));
 	component->cmp = moveable;
 	moveable->move = entity_hero_move;
 	entity->components = ft_arraylist_add(entity->components, component);
