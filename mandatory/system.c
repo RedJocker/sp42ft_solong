@@ -6,12 +6,11 @@
 /*   By: maurodri <maurodri@student.42sp...>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 18:59:37 by maurodri          #+#    #+#             */
-/*   Updated: 2024/04/02 00:02:09 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/04/03 19:33:26 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "system.h"
-#include "MLX42/MLX42.h"
 #include "system_internal.h"
 #include "ft_memlib.h"
 #include "entity.h"

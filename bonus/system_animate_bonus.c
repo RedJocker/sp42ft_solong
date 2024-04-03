@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 19:31:52 by maurodri          #+#    #+#             */
-/*   Updated: 2024/04/02 15:08:23 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/04/03 19:37:31 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	system_animate(t_game *game)
 {
 	game->ctx.animation_acctime += game->mlx->delta_time;
 	if (game->ctx.animation_acctime < 0.8)
-		return;
+		return ;
 	game->ctx.animation_acctime = 0;
 	ft_arraylist_foreacharg(
 		game->ctx.animated,

@@ -6,7 +6,7 @@
 /*   By: maurodri <maurodri@student.42sp...>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 04:06:30 by maurodri          #+#    #+#             */
-/*   Updated: 2024/04/02 01:15:02 by maurodri         ###   ########.fr       */
+/*   Updated: 2024/04/03 19:39:26 by maurodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ void	system_resizefunc(int32_t width, int32_t height, t_game *game)
 	system_map_update_all_drawables_pos(game);
 }
 
-static int32_t system_init_arraylists(t_game *game)
+static int32_t	system_init_arraylists(t_game *game)
 {
 	game->ctx.drawables = ft_arraylist_new((t_vfun1) ft_arraylist_destroy);
 	if (!game->ctx.drawables)
@@ -83,10 +83,12 @@ static int32_t system_init_arraylists(t_game *game)
 			system_quit_panic(game, MEMORY_ERROR, "No memory for drawables"));
 	game->ctx.textures = ft_arraylist_new((t_vfun1) mlx_delete_texture);
 	if (!game->ctx.textures)
-		return (system_quit_panic(game, MEMORY_ERROR, "No memory for textures"));
+		return (system_quit_panic(
+				game, MEMORY_ERROR, "No memory for textures"));
 	game->ctx.animated = ft_arraylist_new((void (*)(void *)) ft_nop);
 	if (!game->ctx.animated)
-		return (system_quit_panic(game, MEMORY_ERROR, "No memory for animated"));
+		return (system_quit_panic(
+				game, MEMORY_ERROR, "No memory for animated"));
 	return (OK);
 }
 

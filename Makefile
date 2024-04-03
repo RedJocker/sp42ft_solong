@@ -6,7 +6,7 @@
 #    By: maurodri <maurodri@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/05 06:51:38 by maurodri          #+#    #+#              #
-#    Updated: 2024/04/01 23:31:35 by maurodri         ###   ########.fr        #
+#    Updated: 2024/04/03 18:56:22 by maurodri         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -59,7 +59,7 @@ BONUS_OBJS := $(addprefix $(OBJ_DIR), $(patsubst %.c, %.o, $(BONUS_FILES)))
 DEP_FLAGS := -MP -MD
 INCLUDES := -I./ -I$(LIBMLX_DIR)/include -I$(LIBFT_DIR)/includes
 VPATH := ./ ./mandatory ./bonus
-CFLAGS := -g3 -fsanitize=address -fsanitize=undefined -Wall -Wextra #-Werror 
+CFLAGS := -Wall -Wextra -Werror 
 LFLAGS := -ldl -lglfw -pthread -lm
 CC := cc
 
@@ -92,10 +92,10 @@ $(OBJ_DIR):
 
 $(LIBMLX):
 	cmake $(LIBMLX_DIR) -B $(LIBMLX_DIR)/build
-	$(MAKE) -C $(LIBMLX_DIR)/build  #--no-print-directory
+	$(MAKE) -C $(LIBMLX_DIR)/build
 
 $(LIBFT):
-	$(MAKE) -C $(LIBFT_DIR)  #--no-print-directory
+	$(MAKE) -C $(LIBFT_DIR)
 
 .PHONY: all clean fclean re bonus run run_invalid
 
@@ -112,13 +112,13 @@ fclean: clean
 
 re: fclean all
 
-run_invalid: $(NAME)
+run_invalid: $(NAME) $(OBJS)
 	for map in $$(ls ./maps/invalid/*.ber); do \
 		echo "file: $$map"; \
 		./so_long $$map; \
 	done
 
-run: $(NAME)
+run: $(NAME) $(OBJS)
 	for map in $$(ls ./maps/*.ber); do \
 		echo "file: $$map"; \
 		./so_long $$map; \
